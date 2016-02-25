@@ -117,7 +117,7 @@ public class Schedule {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Schedule [id: ").append(id).append(", date: ").append(date)
-				.append(", shopId: ").append(shop.getId())
+				.append(", shopId: ").append(shop != null ? shop.getId() : "null")
 				.append(", itemsCount: ").append(items.size()).append("]");
 		return builder.toString();
 	}

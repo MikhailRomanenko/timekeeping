@@ -96,8 +96,8 @@ public class ScheduleItem {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ScheduleItem [scheduleID: ").append(schedule.getId())
-				.append(", employeeID: ").append(employee.getId())
+		builder.append("ScheduleItem [scheduleID: ").append(schedule != null ? schedule.getId() : "null")
+				.append(", employeeID: ").append(employee != null ? employee.getId() : "null")
 				.append(", startTime: ").append(startTime)
 				.append(", duration: ").append(duration).append(", type: ")
 				.append(type).append("]");
