@@ -15,7 +15,6 @@ import com.timekeeping.employee.Employee;
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
 import com.timekeeping.schedule.WorkType;
-import com.timekeeping.schedule.support.ScheduleItemRepository.WorkingTime;
 import com.timekeeping.shop.Shop;
 
 /**
@@ -132,6 +131,31 @@ public class ScheduleService {
 					.map(breakMapper)
 					.collect(Collectors.summingInt(d -> d));
 		return time;
+	}
+	
+	/**
+	 * Class for query projection purpose. Used in {@link ScheduleItemRepository} to provide query 
+	 * projection return type.
+	 * 
+	 * @author Mikhail Romanenko
+	 *
+	 */
+	static class WorkingTime {
+		private final int duration;
+		private final WorkType type;
+		
+		WorkingTime(int duration, WorkType type) {
+			this.duration = duration;
+			this.type = type;
+		}
+		
+		int getDuration() {
+			return duration;
+		}
+		
+		WorkType getType() {
+			return type;
+		}
 	}
 
 }

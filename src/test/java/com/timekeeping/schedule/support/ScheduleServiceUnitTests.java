@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.timekeeping.schedule.WorkType;
-import com.timekeeping.schedule.support.ScheduleItemRepository.WorkingTime;
+import com.timekeeping.schedule.support.ScheduleService.WorkingTime;
 
 public class ScheduleServiceUnitTests {
 	private ScheduleItemRepository repository;
