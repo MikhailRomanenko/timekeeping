@@ -12,10 +12,7 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.timekeeping.schedule.WorkType;
-import com.timekeeping.schedule.support.ScheduleService.WorkingTime;
-
-public class ScheduleServiceUnitTests {
+public class ScheduleServiceTests {
 	private ScheduleItemRepository repository;
 	private ScheduleService service;
 
@@ -28,9 +25,9 @@ public class ScheduleServiceUnitTests {
 	@Test
 	public void workingTimeOnly() {
 		given(repository.findWorkingTimeByEmployeeAndDateRange(any(), any(), any()))
-				.willReturn(Arrays.asList(new WorkingTime(10, WorkType.WORK), new WorkingTime(10, WorkType.WORK),
-						new WorkingTime(10, WorkType.WORK), new WorkingTime(10, WorkType.WORK),
-						new WorkingTime(10, WorkType.WORK)));
+				.willReturn(Arrays.asList(new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
+						new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
+						new WorkingTime(10, "WORK")));
 		int result = service.getWorkingTime(null, null, null, c -> c);
 		assertThat(result, equalTo(50));
 	}
@@ -38,9 +35,9 @@ public class ScheduleServiceUnitTests {
 	@Test
 	public void workingTimeAndOtherTypes() {
 		given(repository.findWorkingTimeByEmployeeAndDateRange(any(), any(), any()))
-				.willReturn(Arrays.asList(new WorkingTime(10, WorkType.ABSENT), new WorkingTime(10, WorkType.VACATION),
-						new WorkingTime(10, WorkType.SICK), new WorkingTime(10, WorkType.WORK),
-						new WorkingTime(10, WorkType.WORK)));
+				.willReturn(Arrays.asList(new WorkingTime(10,"ABSENT"), new WorkingTime(10, "VACATION"),
+						new WorkingTime(10, "SICK"), new WorkingTime(10, "WORK"),
+						new WorkingTime(10, "WORK")));
 		int result = service.getWorkingTime(null, null, null, c -> c);
 		assertThat(result, equalTo(20));
 	}

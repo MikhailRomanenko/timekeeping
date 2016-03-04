@@ -14,6 +14,10 @@ public class ScheduleItemId implements Serializable {
 	private Long schedule;
 	private Long employee;
 	
+	ScheduleItemId(){
+		
+	}
+	
 	public ScheduleItemId(Long schedule, Long employee) {
 		this.schedule = schedule;
 		this.employee = employee;

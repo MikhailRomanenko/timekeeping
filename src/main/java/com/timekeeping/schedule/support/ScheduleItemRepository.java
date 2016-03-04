@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.timekeeping.employee.Employee;
 import com.timekeeping.schedule.ScheduleItem;
 import com.timekeeping.schedule.ScheduleItemId;
-import com.timekeeping.schedule.support.ScheduleService.WorkingTime;
+import com.timekeeping.schedule.support.WorkingTime;
 
 /**
  * Spring Data repository for {@link ScheduleItem} entities.
@@ -21,7 +21,7 @@ import com.timekeeping.schedule.support.ScheduleService.WorkingTime;
 
 public interface ScheduleItemRepository extends JpaRepository<ScheduleItem, ScheduleItemId> {
 
-	@Query("select new com.timekeeping.schedule.support.ScheduleService.WorkingTime(si.duration, si.type) from ScheduleItem si where si.employee=?1 and si.schedule.date between ?2 and ?3")
+	@Query("select new com.timekeeping.schedule.support.WorkingTime(si.duration, si.type) from ScheduleItem si where si.employee=?1 and si.schedule.date between ?2 and ?3")
 	List<WorkingTime> findWorkingTimeByEmployeeAndDateRange(Employee employee, LocalDate from, LocalDate to);
 	
 }

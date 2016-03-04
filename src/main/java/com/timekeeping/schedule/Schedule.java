@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import com.timekeeping.shop.Shop;
@@ -31,14 +31,14 @@ public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Temporal(TemporalType.DATE)
+	@Column(name = "SCHEDULE_DATE")
 	private LocalDate date = LocalDate.now();
 	@ManyToOne
 	@JoinColumn(name = "SHOP_ID")
 	private Shop shop;
 	@Version
 	private int version;
-	@OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<ScheduleItem> items = new HashSet<>();
 
 	protected Schedule(){

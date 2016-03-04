@@ -27,7 +27,7 @@ public class Shop {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	@OneToMany(mappedBy = "store")
+	@OneToMany(mappedBy = "shop")
 	private List<Employee> employees = new ArrayList<>();
 	@Embedded
 	private Location location;

@@ -7,6 +7,10 @@ public class Location {
 	private String city;
 	private String street;
 	
+	Location() {
+		
+	}
+	
 	public Location(String city, String street) {
 		this.city = city;
 		this.street = street;
