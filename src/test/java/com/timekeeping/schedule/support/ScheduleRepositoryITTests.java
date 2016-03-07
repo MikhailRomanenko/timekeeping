@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.timekeeping.RepositoryTestConfig;
 import com.timekeeping.schedule.Schedule;
-import com.timekeeping.shop.Shop;
-import com.timekeeping.shop.support.ShopRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
@@ -34,23 +32,19 @@ public class ScheduleRepositoryITTests {
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 	@Autowired
-	private ShopRepository shopRepository;
-	@Autowired
 	private ScheduleItemRepository scheduleItemRepository;
 
 	@Test
 	public void findByShopAndDateTest() {
-		Shop shop = shopRepository.findOne(SHOP_ID);
-		Schedule schedule = scheduleRepository.findByShopAndDate(shop, DATE);
+		Schedule schedule = scheduleRepository.findByShopIdAndDate(SHOP_ID, DATE);
 		assertThat(schedule.getId(), equalTo(2L));
 	}
 	
 	@Test
 	@Transactional
 	public void deleteByShopAndDateTest() {
-		Shop shop = shopRepository.findOne(SHOP_ID);
 		int count = (int) scheduleRepository.count();
-		scheduleRepository.deleteByShopAndDate(shop, DATE);
+		scheduleRepository.deleteByShopIdAndDate(SHOP_ID, DATE);
 		scheduleRepository.flush();
 		List<Schedule> schedules = scheduleRepository.findAll();
 		assertThat(schedules, hasSize(count - 1));

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.timekeeping.schedule.Schedule;
-import com.timekeeping.shop.Shop;
 
 /**
  * Spring Data repository for {@link Schedule} entities.
@@ -22,10 +21,10 @@ import com.timekeeping.shop.Shop;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	
-	Schedule findByShopAndDate(Shop shop, LocalDate date);
+	Schedule findByShopIdAndDate(Long shopId, LocalDate date);
 	
 	@Modifying
 	@Transactional(readOnly = false)
-	@Query("delete Schedule s where s.shop=?1 and s.date=?2")
-	void deleteByShopAndDate(Shop shop, LocalDate date);
+	@Query("delete Schedule s where s.shop.id=?1 and s.date=?2")
+	void deleteByShopIdAndDate(Long shopId, LocalDate date);
 }
