@@ -7,20 +7,17 @@ public class ScheduleItemBuilder {
 	private Employee employee;
 	private int startTime;
 	private int duration;
-	private WorkType type;
+	private WorkType type = WorkType.WORK;
+	
+	private ScheduleItemBuilder() {
+	}
+	
+	public static ScheduleItemBuilder item() {
+		return new ScheduleItemBuilder();
+	}
 	
 	public ScheduleItem build() {
 		return new ScheduleItem(schedule, employee, startTime, duration, type);
-	}
-	
-	public ScheduleItemBuilder employeeId(final long employeeId) {
-		this.employee = new Employee() {
-			@Override
-			public Long getId() {
-				return employeeId;
-			}
-		};
-		return this;
 	}
 	
 	public ScheduleItemBuilder schedule(Schedule schedule) {

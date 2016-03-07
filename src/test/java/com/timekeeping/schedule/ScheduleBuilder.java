@@ -4,18 +4,33 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.test.util.ReflectionTestUtils;
+
 import com.timekeeping.shop.Shop;
 
 public class ScheduleBuilder {
-	private Long id;
-	private LocalDate date;
+	private Long id = 1L;
+	private LocalDate date = LocalDate.of(2016, 3, 1);
 	private Shop shop;
 	private int version;
-	private Set<ScheduleItem> items;
+	private Set<ScheduleItem> items = new HashSet<>();
 	
+	private ScheduleBuilder() {
+	}
+	
+	public static ScheduleBuilder schedule() {
+		return new ScheduleBuilder();
+	}
+	
+	public Schedule build() {
+		Schedule schedule = new Schedule(shop);
+		ReflectionTestUtils.setField(schedule, "id", id);
+		ReflectionTestUtils.setField(schedule, "date", date);
+		ReflectionTestUtils.setField(schedule, "version", version);
+		ReflectionTestUtils.setField(schedule, "items", items);
+		return schedule;
+	}
 	public ScheduleBuilder withItem(ScheduleItem item) {
-		if(items == null)
-			items = new HashSet<>();
 		items.add(item);
 		return this;
 	}
@@ -41,11 +56,8 @@ public class ScheduleBuilder {
 	}
 	
 	public ScheduleBuilder items(Set<ScheduleItem> items) {
-		this.items = new HashSet<>(items);
+		this.items = items;
 		return this;
 	}
-	
-	public Schedule build() {
-		return new Schedule(id, date, shop, version, items);
-	}
+
 }

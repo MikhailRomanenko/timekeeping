@@ -1,6 +1,9 @@
 package com.timekeeping.schedule;
 
-import static org.hamcrest.Matchers.equalTo;
+import static com.timekeeping.employee.EmployeeBuilder.employee;
+import static com.timekeeping.schedule.ScheduleBuilder.schedule;
+import static com.timekeeping.schedule.ScheduleItemBuilder.item;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -12,74 +15,67 @@ public class ScheduleTests {
 
 	@Test
 	public void updateWithEmpty() {
-		ScheduleItemBuilder itemBuilder = new ScheduleItemBuilder();
-		ScheduleBuilder scheduleBuilder  = new ScheduleBuilder();
-		Schedule schedule = scheduleBuilder
-				.withItem(itemBuilder.employeeId(1).build())
-				.withItem(itemBuilder.employeeId(2).build())
-				.withItem(itemBuilder.employeeId(3).build())
+		Schedule schedule = schedule()
+				.withItem(item().employee(employee().id(1L).build()).build())
+				.withItem(item().employee(employee().id(2L).build()).build())
+				.withItem(item().employee(employee().id(3L).build()).build())
 				.build();
 		
 		schedule.updateItems(new HashSet<ScheduleItem>());
 		
-		assertThat(schedule.getItems().size(), equalTo(3));
+		assertThat(schedule.getItems(), hasSize(3));
 	}
 	
 	@Test
 	public void updateWithAllNew() {
-		ScheduleItemBuilder itemBuilder = new ScheduleItemBuilder();
-		ScheduleBuilder scheduleBuilder  = new ScheduleBuilder();
-		Schedule schedule = scheduleBuilder
-				.withItem(itemBuilder.employeeId(1).build())
-				.withItem(itemBuilder.employeeId(2).build())
-				.withItem(itemBuilder.employeeId(3).build())
+		Schedule schedule = schedule()
+				.withItem(item().employee(employee().id(1L).build()).build())
+				.withItem(item().employee(employee().id(2L).build()).build())
+				.withItem(item().employee(employee().id(3L).build()).build())
 				.build();
 		
+		
 		schedule.updateItems(Arrays.asList(
-					itemBuilder.employeeId(4).build(),
-					itemBuilder.employeeId(5).build(),
-					itemBuilder.employeeId(6).build()
+					item().employee(employee().id(4L).build()).build(),
+					item().employee(employee().id(5L).build()).build(),
+					item().employee(employee().id(6L).build()).build()
 				));
 		
-		assertThat(schedule.getItems().size(), equalTo(6));
+		assertThat(schedule.getItems(), hasSize(6));
 	}
 	
 	@Test
 	public void updateWithSomeNew() {
-		ScheduleItemBuilder itemBuilder = new ScheduleItemBuilder();
-		ScheduleBuilder scheduleBuilder  = new ScheduleBuilder();
-		Schedule schedule = scheduleBuilder
-				.withItem(itemBuilder.employeeId(1).build())
-				.withItem(itemBuilder.employeeId(2).build())
-				.withItem(itemBuilder.employeeId(3).build())
+		Schedule schedule = schedule()
+				.withItem(item().employee(employee().id(1L).build()).build())
+				.withItem(item().employee(employee().id(2L).build()).build())
+				.withItem(item().employee(employee().id(3L).build()).build())
 				.build();
 		
 		schedule.updateItems(Arrays.asList(
-				itemBuilder.employeeId(2).build(),
-				itemBuilder.employeeId(3).build(),
-				itemBuilder.employeeId(4).build()
-				));
+				item().employee(employee().id(2L).build()).build(),
+				item().employee(employee().id(3L).build()).build(),
+				item().employee(employee().id(4L).build()).build()
+			));
 		
-		assertThat(schedule.getItems().size(), equalTo(4));
+		assertThat(schedule.getItems(), hasSize(4));
 	}
 	
 	@Test
 	public void updateWithNothingNew() {
-		ScheduleItemBuilder itemBuilder = new ScheduleItemBuilder();
-		ScheduleBuilder scheduleBuilder  = new ScheduleBuilder();
-		Schedule schedule = scheduleBuilder
-				.withItem(itemBuilder.employeeId(1).build())
-				.withItem(itemBuilder.employeeId(2).build())
-				.withItem(itemBuilder.employeeId(3).build())
+		Schedule schedule = schedule()
+				.withItem(item().employee(employee().id(1L).build()).build())
+				.withItem(item().employee(employee().id(2L).build()).build())
+				.withItem(item().employee(employee().id(3L).build()).build())
 				.build();
 		
 		schedule.updateItems(Arrays.asList(
-				itemBuilder.employeeId(1).build(),
-				itemBuilder.employeeId(2).build(),
-				itemBuilder.employeeId(3).build()
-				));
+				item().employee(employee().id(1L).build()).build(),
+				item().employee(employee().id(2L).build()).build(),
+				item().employee(employee().id(3L).build()).build()
+			));
 		
-		assertThat(schedule.getItems().size(), equalTo(3));
+		assertThat(schedule.getItems(), hasSize(3));
 	}
 
 }

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.timekeeping.schedule.ScheduleJsonView;
 import com.timekeeping.shop.Shop;
 
 /**
@@ -22,6 +24,7 @@ import com.timekeeping.shop.Shop;
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Long id;
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -111,7 +114,7 @@ public class Employee {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Employee [id: ").append(id).append(", firstName: ").append(firstName).append(", lastName: ")
-				.append(lastName).append(", shopID: ").append(shop.getId()).append(", active: ").append(active).append("]");
+				.append(lastName).append(", shopID: ").append(shop != null ? shop.getId() : "null").append(", active: ").append(active).append("]");
 		return builder.toString();
 	}
 	
