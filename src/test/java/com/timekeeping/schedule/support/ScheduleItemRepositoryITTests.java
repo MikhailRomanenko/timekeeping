@@ -17,8 +17,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.timekeeping.RepositoryTestConfig;
-import com.timekeeping.employee.Employee;
-import com.timekeeping.employee.support.EmployeeRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
@@ -28,15 +26,13 @@ public class ScheduleItemRepositoryITTests {
 	@Autowired
 	private ScheduleItemRepository scheduleItemRepository;
 	@Autowired
-	private EmployeeRepository employeeRepository;
 	private static final LocalDate from = LocalDate.of(2016, 2, 29);
 	private static final LocalDate to = LocalDate.of(2016, 3, 2);
 
 	@Test
 	public void findWorkingTimeTest() {
-		Employee employee = employeeRepository.findOne(1L);
 		List<Integer> times = scheduleItemRepository
-				.findWorkingTimeByEmployeeAndDateRange(employee, from, to)
+				.findWorkingTimeByEmployeeIdAndDateRange(1L, from, to)
 				.stream().map(t -> t.getDuration()).collect(Collectors.toList());
 		assertThat(times, hasSize(3));
 		assertThat(times, everyItem(equalTo(240)));
