@@ -35,7 +35,7 @@ public class Schedule {
 	private Long id;
 	@Column(name = "SCHEDULE_DATE")
 	@JsonView(ScheduleJsonView.ScheduleTableView.class)
-	private LocalDate date = LocalDate.now();
+	private LocalDate date;
 	@ManyToOne
 	@JoinColumn(name = "SHOP_ID")
 	private Shop shop;
@@ -50,20 +50,10 @@ public class Schedule {
 		
 	}
 
-	public Schedule(Shop shop) {
+	public Schedule(Shop shop, LocalDate date) {
 		this.shop = shop;
-	}
-	
-/*	*//**
-	 * For test purpose only. 
-	 *//*
-	protected Schedule(Long id, LocalDate date, Shop shop, int version, Set<ScheduleItem> items) {
-		this.id = id;
 		this.date = date;
-		this.shop = shop;
-		this.version = version;
-		this.items = items;
-	}*/
+	}
 
 	public Long getId() {
 		return id;
@@ -101,7 +91,7 @@ public class Schedule {
 		return this.items;
 	}
 
-	protected void setItems(Collection<? extends ScheduleItem> items) {
+	public void setItems(Collection<? extends ScheduleItem> items) {
 		this.items = new HashSet<>(items);
 	}
 	
@@ -114,7 +104,7 @@ public class Schedule {
 	}
 	
 	public void updateItems(Collection<? extends ScheduleItem> items) {
-		this.items.removeIf(item -> items.contains(item));
+		this.items.clear();
 		this.items.addAll(items);
 	}
 	
