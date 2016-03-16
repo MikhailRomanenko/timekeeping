@@ -6,16 +6,17 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
-import com.timekeeping.employee.Employee;
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
 import com.timekeeping.schedule.WorkType;
 import com.timekeeping.shop.Shop;
+import com.timekeeping.shop.support.ShopRepository;
 
 /**
  * Service providing high-level data access and other {@link Schedule}-related
@@ -26,136 +27,130 @@ import com.timekeeping.shop.Shop;
  */
 
 @Service
+@Transactional
 public class ScheduleService {
 	private final ScheduleRepository scheduleRepository;
 	private final ScheduleItemRepository scheduleItemRepository;
+	private final ShopRepository shopRepository;
 	private final BreakPolicy breakPolicy;
 
 	@Autowired
-	public ScheduleService(ScheduleRepository scheduleRepository, ScheduleItemRepository scheduleItemRepository, BreakPolicy breakPolicy) {
+	public ScheduleService(ScheduleRepository scheduleRepository, ScheduleItemRepository scheduleItemRepository,
+			ShopRepository shopRepository, BreakPolicy breakPolicy) {
 		this.scheduleRepository = scheduleRepository;
 		this.scheduleItemRepository = scheduleItemRepository;
+		this.shopRepository = shopRepository;
 		this.breakPolicy = breakPolicy;
 	}
 
 	/**
 	 * Finds particular {@link Schedule} entity corresponding to the given
-	 * {@code shop} and {@code date} parameters.
+	 * {@code shopId} and {@code date} parameters.
 	 * 
 	 * @param shop
-	 *            {@link Shop} entity.
+	 *            {@code long}-value id of the {@link Shop} entity.
 	 * @param date
-	 *            {@code LocalDate} of the schedule.
-	 * @return {@link Schedule} entity, otherwise returns {@code null}.
+	 *            {@code LocalDate} of the schedule. Must be not null.
+	 * @return {@link Schedule} entity, otherwise returns null.
 	 */
-	public Schedule findSchedule(Shop shop, LocalDate date) {
-		return scheduleRepository.findByShopAndDate(shop, date);
+	@Transactional(readOnly = true)
+	public Schedule findSchedule(long shopId, LocalDate date) {
+		return scheduleRepository.findByShopIdAndDate(shopId, date);
 	}
 
 	/**
 	 * Saves {@link Schedule} object or updates its {@link ScheduleItem} set
-	 * with provided {@code schedule} object.
+	 * with provided items.
 	 * 
-	 * @param schedule
-	 *            {@link Schedule} object to save.
+	 * @param date
+	 *            {@code LocalDate} of the schedule to save/update.
+	 * @param shopId
+	 *            id of the shop.
+	 * @param items
+	 *            {@code Set} of the {@code ScheduleItems} objects to save/update.
 	 */
-	@Transactional(isolation = Isolation.READ_COMMITTED, readOnly = false)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveSchedule(Schedule schedule) {
-		// TODO Test logic
-		if (schedule.getId() != null) {
-			updateItems(schedule);
-		} else {
-			scheduleRepository.save(schedule);
+		Assert.notNull(schedule.getDate(), "The 'date' field must not be null");
+		Assert.notNull(schedule.getItems(), "The 'items' field must not be null");
+		Assert.notNull(schedule.getShop(), "The 'shop' field must not be null");
+		Assert.isTrue(shopRepository.exists(schedule.getShop().getId()),
+				"Shop with given ID does not exist");
+		
+		if(!sameVersions(schedule)) {
+			throw new OptimisticLockingFailureException("Attempt to save stale copy of an object");
 		}
-
+		
+		scheduleRepository.saveOrUpdate(schedule);
+		
 	}
-
-	/**
-	 * Updates {@link ScheduleItem}s set of the existing {@link Schedule} entity
-	 * with provided {@code schedule}'s set.
-	 * 
-	 * @param schedule
-	 */
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	protected void updateItems(Schedule schedule) {
-		// TODO Test logic
-		Schedule scheduleToUpdate = scheduleRepository.findOne(schedule.getId());
-		scheduleToUpdate.updateItems(schedule.getItems());
-		scheduleRepository.save(scheduleToUpdate);
+	
+	private boolean sameVersions(Schedule schedule) {
+		int dbVersion = scheduleRepository.getVersionFor(schedule.getId());
+		return schedule.getVersion() == dbVersion;
 	}
 
 	/**
 	 * Removes particular {@link Schedule} entity corresponding to the given
-	 * {@code shop} and {@code date} parameters.
+	 * {@code shopId} and {@code date} parameters.
 	 * 
-	 * @param shop
-	 *            {@link Shop} entity.
+	 * @param shopId
+	 *            {@code long}-value id of the {@link Shop} entity.
 	 * @param date
-	 *            {@code LocalDate} of the schedule.
+	 *            {@code LocalDate} of the schedule. Must be not null.
 	 */
-	public void removeSchedule(Shop shop, LocalDate date) {
-		// TODO Test logic
-		scheduleRepository.deleteByShopAndDate(shop, date);
+	public void removeSchedule(long shopId, LocalDate date) {
+		scheduleRepository.deleteByShopIdAndDate(shopId, date);
 	}
 
 	/**
-	 * Calculates statistic for given employee and date.
-	 * All calculations are made according to the provided date.
-	 * @param date calculations are made according to this date
-	 * @param employee calculation are made for this employee
+	 * Calculates statistic for given employee and date. All calculations are
+	 * made according to the provided date.
+	 * 
+	 * @param date
+	 *            calculations are made according to this date
+	 * @param employeeId
+	 *            calculation are made for this employee
 	 * @return {@link WorkStatistic} object representing statistic
 	 */
 	@Transactional(readOnly = true)
-	public WorkStatistic getStatistic(LocalDate date, Employee employee) {
-		// TODO Test logic
-		int timeForWeek = getWorkingTime(employee, DateUtils.getMonthFirstDay(date), DateUtils.getMonthLastDay(date), breakPolicy.withoutBreak());
-		int timeWorked = getWorkingTime(employee, DateUtils.getMonthFirstDay(date), date, breakPolicy.withoutBreak());
-		int timeForMonth = getWorkingTime(employee, DateUtils.getWeekStart(date), DateUtils.getWeekEnd(date), breakPolicy.withoutBreak());
-		return new WorkStatistic(date, employee.getId(), timeForWeek, timeWorked, timeForMonth);
+	public WorkStatistic getStatistic(LocalDate date, Long employeeId) {
+		int timeForWeek = getWorkingTime(employeeId, DateUtils.getWeekStart(date), DateUtils.getWeekEnd(date),
+				breakPolicy.mapper());
+		int timeWorked = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), date, breakPolicy.mapper());
+		int timeForMonth = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), DateUtils.getMonthLastDay(date),
+				breakPolicy.mapper());
+		return new WorkStatistic(date, employeeId, timeForWeek, timeWorked, timeForMonth);
 	}
 
-	/**
-	 * Returns working time for specified period and filtered by provided {@link breakMapper}.
-	 * @param employee time fetched for this employee
-	 * @param from date from which fetching is occurred
-	 * @param to date to which fetching is occurred
-	 * @param breakMapper maps working hours
-	 * @return working time in minutes
-	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	protected int getWorkingTime(Employee employee, LocalDate from, LocalDate to, UnaryOperator<Integer> breakMapper) {
-		List<WorkingTime> days = scheduleItemRepository.findWorkingTimeByEmployeeAndDateRange(employee, from, to);
-		int time = days.stream()
-					.filter(d -> d.getType() == WorkType.WORK)
-					.map(WorkingTime::getDuration)
-					.map(breakMapper)
-					.collect(Collectors.summingInt(d -> d));
+	int getWorkingTime(Long employeeId, LocalDate from, LocalDate to, UnaryOperator<Integer> breakMapper) {
+		List<WorkingTime> days = scheduleItemRepository.findWorkingTimeByEmployeeIdAndDateRange(employeeId, from, to);
+		int time = days.stream().filter(d -> d.getType() == WorkType.WORK).map(WorkingTime::getDuration)
+				.map(breakMapper).collect(Collectors.summingInt(d -> d));
 		return time;
 	}
-	
-	/**
-	 * Class for query projection purpose. Used in {@link ScheduleItemRepository} to provide query 
-	 * projection return type.
-	 * 
-	 * @author Mikhail Romanenko
-	 *
-	 */
-	static class WorkingTime {
-		private final int duration;
-		private final WorkType type;
-		
-		WorkingTime(int duration, WorkType type) {
-			this.duration = duration;
-			this.type = type;
-		}
-		
-		int getDuration() {
-			return duration;
-		}
-		
-		WorkType getType() {
-			return type;
-		}
+
+}
+
+class WorkingTime {
+	private final int duration;
+	private final WorkType type;
+
+	public WorkingTime(int duration, String type) {
+		this.duration = duration;
+		this.type = WorkType.valueOf(type);
 	}
 
+	public WorkingTime(int duration, WorkType type) {
+		this.duration = duration;
+		this.type = type;
+	}
+
+	int getDuration() {
+		return duration;
+	}
+
+	WorkType getType() {
+		return type;
+	}
 }

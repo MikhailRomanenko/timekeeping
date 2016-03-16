@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.employee.Employee;
+import com.timekeeping.schedule.ScheduleJsonView;
 import com.timekeeping.user.User;
 
 /**
@@ -25,6 +27,7 @@ import com.timekeeping.user.User;
 public class Shop {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Long id;
 	private String name;
 	@OneToMany(mappedBy = "shop")

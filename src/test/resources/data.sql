@@ -12,15 +12,17 @@ insert into employee values(3, true, 'PART_TIME', 'Name3', 'Surname3', 3, 1);
 insert into employee values(4, false, 'FULL_TIME', 'Name4', 'Surname4', 3, 1);
 
 insert into schedule values(1, DATE '2016-02-29', 0, 1);
-insert into schedule values(2, DATE '2016-03-01', 0, 1);
+insert into schedule values(2, DATE '2016-03-01', 1, 1);
 insert into schedule values(3, DATE '2016-03-02', 0, 1);
 
 insert into schedule_item values(1, 1, 240, 600, 'WORK');
 insert into schedule_item values(2, 1, 720, 600, 'WORK');
 insert into schedule_item values(3, 1, 900, 600, 'WORK');
+
 insert into schedule_item values(1, 2, 240, 720, 'WORK');
 insert into schedule_item values(2, 2, 780, 720, 'WORK');
 insert into schedule_item values(3, 2, 900, 720, 'WORK');
+
 insert into schedule_item values(1, 3, 240, 780, 'WORK');
 insert into schedule_item values(2, 3, 840, 780, 'WORK');
 insert into schedule_item values(3, 3, 900, 780, 'WORK');

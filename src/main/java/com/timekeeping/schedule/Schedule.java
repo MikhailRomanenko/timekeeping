@@ -38,6 +38,7 @@ public class Schedule {
 	private LocalDate date;
 	@ManyToOne
 	@JoinColumn(name = "SHOP_ID")
+	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Shop shop;
 	@Version
 	@JsonView(ScheduleJsonView.ScheduleTableView.class)

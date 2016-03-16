@@ -11,13 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.timekeeping.shop.Shop;
 
 @Entity
 public class User {
-	public static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,5 +21,5 @@ public interface ScheduleItemRepository extends JpaRepository<ScheduleItem, Sche
 
 	@Query("select new com.timekeeping.schedule.support.WorkingTime(si.duration, si.type) from ScheduleItem si where si.employee.id=?1 and si.schedule.date between ?2 and ?3")
 	List<WorkingTime> findWorkingTimeByEmployeeIdAndDateRange(Long employeeId, LocalDate from, LocalDate to);
-	
+
 }

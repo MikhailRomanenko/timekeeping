@@ -7,7 +7,7 @@ import com.timekeeping.shop.Shop;
 public final class EmployeeBuilder {
 
 	private Long id = 1L;
-	private String firstName = "";
+	private String firstName = "employee_";
 	private String lastName = "";
 	private Shop shop;
 	private Position position;
@@ -22,7 +22,7 @@ public final class EmployeeBuilder {
 	}
 	
 	public Employee build() {
-		Employee emp = new Employee(firstName, lastName, shop, position, employment);
+		Employee emp = new Employee(firstName + id, lastName, shop, position, employment);
 		ReflectionTestUtils.setField(emp, "id", id);
 		emp.setActive(this.active);
 		return emp;

@@ -23,9 +23,8 @@ public class ScheduleBuilder {
 	}
 	
 	public Schedule build() {
-		Schedule schedule = new Schedule(shop);
+		Schedule schedule = new Schedule(shop, date);
 		ReflectionTestUtils.setField(schedule, "id", id);
-		ReflectionTestUtils.setField(schedule, "date", date);
 		ReflectionTestUtils.setField(schedule, "version", version);
 		ReflectionTestUtils.setField(schedule, "items", items);
 		return schedule;

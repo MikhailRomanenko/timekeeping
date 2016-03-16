@@ -19,12 +19,12 @@ public class ScheduleServiceTests {
 	@Before
 	public void setUp() {
 		repository = mock(ScheduleItemRepository.class);
-		service = new ScheduleService(null, repository, null);
+		service = new ScheduleService(null, repository, null, null);
 	}
 
 	@Test
 	public void workingTimeOnly() {
-		given(repository.findWorkingTimeByEmployeeAndDateRange(any(), any(), any()))
+		given(repository.findWorkingTimeByEmployeeIdAndDateRange(any(), any(), any()))
 				.willReturn(Arrays.asList(new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK")));
@@ -34,7 +34,7 @@ public class ScheduleServiceTests {
 
 	@Test
 	public void workingTimeAndOtherTypes() {
-		given(repository.findWorkingTimeByEmployeeAndDateRange(any(), any(), any()))
+		given(repository.findWorkingTimeByEmployeeIdAndDateRange(any(), any(), any()))
 				.willReturn(Arrays.asList(new WorkingTime(10,"ABSENT"), new WorkingTime(10, "VACATION"),
 						new WorkingTime(10, "SICK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK")));
@@ -44,7 +44,7 @@ public class ScheduleServiceTests {
 
 	@Test
 	public void workingTimeEmpty() {
-		given(repository.findWorkingTimeByEmployeeAndDateRange(any(), any(), any()))
+		given(repository.findWorkingTimeByEmployeeIdAndDateRange(any(), any(), any()))
 				.willReturn(Collections.emptyList());
 		int result = service.getWorkingTime(null, null, null, c -> c);
 		assertThat(result, equalTo(0));
