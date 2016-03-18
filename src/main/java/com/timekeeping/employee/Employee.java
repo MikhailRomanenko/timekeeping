@@ -1,5 +1,7 @@
 package com.timekeeping.employee;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -57,10 +59,6 @@ public class Employee {
 	public Long getId() {
 		return this.id;
 	}
-	
-	protected void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -113,9 +111,56 @@ public class Employee {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Employee [id: ").append(id).append(", firstName: ").append(firstName).append(", lastName: ")
-				.append(lastName).append(", shopID: ").append(shop != null ? shop.getId() : "null").append(", active: ").append(active).append("]");
+		builder.append("Employee [id: ").append(id).append(", firstName: ").append(firstName).append(", lastName: ").append(lastName)
+				.append(", positionID: ").append(position != null ? position.getId() : "null")
+				.append(", shopID: ").append(shop != null ? shop.getId() : "null").append(", active: ").append(active).append("]");
 		return builder.toString();
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(active, employment, firstName, lastName, id, position, shop);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (active != other.active)
+			return false;
+		if (employment != other.employment)
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		if (shop == null) {
+			if (other.shop != null)
+				return false;
+		} else if (!shop.equals(other.shop))
+			return false;
+		return true;
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.timekeeping.employee;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,10 +35,6 @@ public class Position {
 		return id;
 	}
 
-	protected void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -59,7 +57,37 @@ public class Position {
 		builder.append("Position [name: ").append(name).append(", department: ").append(department).append("]");
 		return builder.toString();
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(department, id, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Position other = (Position) obj;
+		if (department == null) {
+			if (other.department != null)
+				return false;
+		} else if (!department.equals(other.department))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 
 }

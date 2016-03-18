@@ -3,7 +3,7 @@ package com.timekeeping.schedule;
 import static com.timekeeping.employee.EmployeeBuilder.employee;
 import static com.timekeeping.schedule.ScheduleBuilder.schedule;
 import static com.timekeeping.schedule.ScheduleItemBuilder.item;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
@@ -20,7 +20,7 @@ public class ScheduleTests {
 	private <T> void assertItems(Set<ScheduleItem> items, T... expected) {
 		assertThat(items, hasSize(expected.length));
 		assertThat(items.stream().map(i -> i.getEmployee().getId()).collect(Collectors.toList()),
-				contains(expected));
+				containsInAnyOrder(expected));
 	}
 
 	@Test

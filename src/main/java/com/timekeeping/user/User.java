@@ -1,6 +1,6 @@
 package com.timekeeping.user;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ public class User {
 	@JoinTable(name = "USER_SHOP", 
 		joinColumns = @JoinColumn(name = "USER_ID"),
 		inverseJoinColumns = @JoinColumn(name = "SHOP_ID"))
-	private List<Shop> shops = new ArrayList<>();
+	private List<Shop> shops = new LinkedList<>();
 	private String roles;
 
 	protected User() {
@@ -87,8 +87,9 @@ public class User {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("User [login: ").append(login).append(", roles: ").append(roles).append("]");
+		builder.append("User [id: ").append(id).append(", login: ").append(login).append(", roles: ").append(roles)
+				.append("]");
 		return builder.toString();
 	}
-	
+
 }

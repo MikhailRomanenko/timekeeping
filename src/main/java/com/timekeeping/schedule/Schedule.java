@@ -3,6 +3,7 @@ package com.timekeeping.schedule;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -116,6 +117,38 @@ public class Schedule {
 				.append(", shopId: ").append(shop != null ? shop.getId() : "null")
 				.append(", itemsCount: ").append(items.size()).append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, id, shop);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Schedule other = (Schedule) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (shop == null) {
+			if (other.shop != null)
+				return false;
+		} else if (!shop.equals(other.shop))
+			return false;
+		return true;
 	}
 	
 }

@@ -2,7 +2,6 @@ package com.timekeeping.schedule;
 
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -112,7 +111,7 @@ public class ScheduleItem {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(employee.getId());
+		return Objects.hash(schedule, employee);
 	}
 
 	@Override
@@ -127,7 +126,12 @@ public class ScheduleItem {
 		if (employee == null) {
 			if (other.employee != null)
 				return false;
-		} else if (!employee.getId().equals(other.employee.getId()))
+		} else if (!employee.equals(other.employee))
+			return false;
+		if (schedule == null) {
+			if (other.schedule != null)
+				return false;
+		} else if (!schedule.equals(other.schedule))
 			return false;
 		return true;
 	}

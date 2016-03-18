@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = TimekeepingApplication.class)
-@EntityScan(basePackageClasses = TimekeepingApplication.class)
+@EnableJpaRepositories(basePackageClasses = RepositoryTestConfig.class)
+@EntityScan(basePackageClasses = RepositoryTestConfig.class)
 @Import({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
 public class RepositoryTestConfig {
 
