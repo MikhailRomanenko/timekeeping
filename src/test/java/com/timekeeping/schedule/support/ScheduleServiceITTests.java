@@ -23,27 +23,19 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.timekeeping.RepositoryTestConfig;
+import com.timekeeping.AbstractRepositoryIntegerationTest;
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
 import com.timekeeping.shop.support.ShopRepository;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
-@TestPropertySource(locations = "classpath:\\test.properties")
-public class ScheduleServiceITTests {
+public class ScheduleServiceITTests extends AbstractRepositoryIntegerationTest {
 	
 	@Autowired
 	private EntityManager em;
-
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 	@Autowired
