@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-public class ScheduleTests {
+public class ScheduleTest {
 	
 	@SuppressWarnings("unchecked")
 	private <T> void assertItems(Set<ScheduleItem> items, T... expected) {

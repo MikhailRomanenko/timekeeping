@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.timekeeping.AbstractRepositoryIntegerationTest;
 
 
-public class ScheduleItemRepositoryITTests extends AbstractRepositoryIntegerationTest {
+public class ScheduleItemRepositoryITTest extends AbstractRepositoryIntegerationTest {
 
 	@Autowired
 	private ScheduleItemRepository scheduleItemRepository;

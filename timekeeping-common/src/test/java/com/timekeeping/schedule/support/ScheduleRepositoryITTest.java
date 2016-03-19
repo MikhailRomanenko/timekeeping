@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.timekeeping.AbstractRepositoryIntegerationTest;
 import com.timekeeping.schedule.Schedule;
 
-public class ScheduleRepositoryITTests extends AbstractRepositoryIntegerationTest {
+public class ScheduleRepositoryITTest extends AbstractRepositoryIntegerationTest {
 	private static final LocalDate DATE = LocalDate.of(2016, 3, 1);
 	private static final long SHOP_ID = 1L;
 	private static final long SCHEDULE_ID = 1L;

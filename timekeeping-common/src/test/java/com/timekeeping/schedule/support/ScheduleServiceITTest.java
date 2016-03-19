@@ -32,7 +32,7 @@ import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
 import com.timekeeping.shop.support.ShopRepository;
 
-public class ScheduleServiceITTests extends AbstractRepositoryIntegerationTest {
+public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	
 	@Autowired
 	private EntityManager em;

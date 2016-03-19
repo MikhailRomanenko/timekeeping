@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-public class DateUtilsTests {
+public class DateUtilsTest {
 
 	@Test
 	public void startingEdgeOfMonth() {

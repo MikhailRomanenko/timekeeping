@@ -12,7 +12,7 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ScheduleServiceTests {
+public class ScheduleServiceTest {
 	private ScheduleItemRepository repository;
 	private ScheduleService service;
 
