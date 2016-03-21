@@ -8,18 +8,22 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.UnaryOperator;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ScheduleServiceTest {
+public class StatisticServiceTest {
 	private ScheduleItemRepository repository;
-	private ScheduleService service;
+	private BreakPolicy policy;
+	private StatisticService service;
 
 	@Before
 	public void setUp() {
 		repository = mock(ScheduleItemRepository.class);
-		service = new ScheduleService(null, repository, null, null);
+		policy = mock(BreakPolicy.class);
+		given(policy.mapper()).willReturn(UnaryOperator.identity());
+		service = new StatisticService(repository, policy);
 	}
 
 	@Test
@@ -28,7 +32,7 @@ public class ScheduleServiceTest {
 				.willReturn(Arrays.asList(new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK")));
-		int result = service.getWorkingTime(null, null, null, c -> c);
+		int result = service.getWorkingTime(null, null, null, policy.mapper());
 		assertThat(result, equalTo(50));
 	}
 
@@ -38,7 +42,7 @@ public class ScheduleServiceTest {
 				.willReturn(Arrays.asList(new WorkingTime(10,"ABSENT"), new WorkingTime(10, "VACATION"),
 						new WorkingTime(10, "SICK"), new WorkingTime(10, "WORK"),
 						new WorkingTime(10, "WORK")));
-		int result = service.getWorkingTime(null, null, null, c -> c);
+		int result = service.getWorkingTime(null, null, null, policy.mapper());
 		assertThat(result, equalTo(20));
 	}
 
@@ -46,7 +50,7 @@ public class ScheduleServiceTest {
 	public void workingTimeEmpty() {
 		given(repository.findWorkingTimeByEmployeeIdAndDateRange(any(), any(), any()))
 				.willReturn(Collections.emptyList());
-		int result = service.getWorkingTime(null, null, null, c -> c);
+		int result = service.getWorkingTime(null, null, null, policy.mapper());
 		assertThat(result, equalTo(0));
 	}
 }

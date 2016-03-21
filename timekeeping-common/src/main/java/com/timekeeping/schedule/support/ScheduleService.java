@@ -1,9 +1,6 @@
 package com.timekeeping.schedule.support;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -14,7 +11,6 @@ import org.springframework.util.Assert;
 
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
-import com.timekeeping.schedule.WorkType;
 import com.timekeeping.shop.Shop;
 import com.timekeeping.shop.support.ShopRepository;
 
@@ -30,17 +26,12 @@ import com.timekeeping.shop.support.ShopRepository;
 @Transactional
 public class ScheduleService {
 	private final ScheduleRepository scheduleRepository;
-	private final ScheduleItemRepository scheduleItemRepository;
 	private final ShopRepository shopRepository;
-	private final BreakPolicy breakPolicy;
 
 	@Autowired
-	public ScheduleService(ScheduleRepository scheduleRepository, ScheduleItemRepository scheduleItemRepository,
-			ShopRepository shopRepository, BreakPolicy breakPolicy) {
+	public ScheduleService(ScheduleRepository scheduleRepository, ShopRepository shopRepository) {
 		this.scheduleRepository = scheduleRepository;
-		this.scheduleItemRepository = scheduleItemRepository;
 		this.shopRepository = shopRepository;
-		this.breakPolicy = breakPolicy;
 	}
 
 	/**
@@ -103,54 +94,4 @@ public class ScheduleService {
 		scheduleRepository.deleteByShopIdAndDate(shopId, date);
 	}
 
-	/**
-	 * Calculates statistic for given employee and date. All calculations are
-	 * made according to the provided date.
-	 * 
-	 * @param date
-	 *            calculations are made according to this date
-	 * @param employeeId
-	 *            calculation are made for this employee
-	 * @return {@link WorkStatistic} object representing statistic
-	 */
-	@Transactional(readOnly = true)
-	public WorkStatistic getStatistic(LocalDate date, Long employeeId) {
-		int timeForWeek = getWorkingTime(employeeId, DateUtils.getWeekStart(date), DateUtils.getWeekEnd(date),
-				breakPolicy.mapper());
-		int timeWorked = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), date, breakPolicy.mapper());
-		int timeForMonth = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), DateUtils.getMonthLastDay(date),
-				breakPolicy.mapper());
-		return new WorkStatistic(date, employeeId, timeForWeek, timeWorked, timeForMonth);
-	}
-
-	int getWorkingTime(Long employeeId, LocalDate from, LocalDate to, UnaryOperator<Integer> breakMapper) {
-		List<WorkingTime> days = scheduleItemRepository.findWorkingTimeByEmployeeIdAndDateRange(employeeId, from, to);
-		int time = days.stream().filter(d -> d.getType() == WorkType.WORK).map(WorkingTime::getDuration)
-				.map(breakMapper).collect(Collectors.summingInt(d -> d));
-		return time;
-	}
-
-}
-
-class WorkingTime {
-	private final int duration;
-	private final WorkType type;
-
-	public WorkingTime(int duration, String type) {
-		this.duration = duration;
-		this.type = WorkType.valueOf(type);
-	}
-
-	public WorkingTime(int duration, WorkType type) {
-		this.duration = duration;
-		this.type = type;
-	}
-
-	int getDuration() {
-		return duration;
-	}
-
-	WorkType getType() {
-		return type;
-	}
 }

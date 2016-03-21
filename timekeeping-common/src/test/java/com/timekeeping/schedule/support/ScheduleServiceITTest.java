@@ -9,8 +9,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.junit.Assert.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -43,7 +41,6 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	@Autowired
 	private ShopRepository shopRepository;
 	private ScheduleService service;
-	private BreakPolicy breakPolicy;
 	
 	private static Matcher<ScheduleItem> hasStartTime(final int startTime) {
 		return new TypeSafeDiagnosingMatcher<ScheduleItem>() {
@@ -98,18 +95,7 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	
 	@Before
 	public void setUp() {
-		breakPolicy = mock(BreakPolicy.class);
-		given(breakPolicy.mapper()).willReturn(v -> v);
-		service = new ScheduleService(scheduleRepository, scheduleItemRepository,
-				shopRepository,  breakPolicy);
-	}
-	
-	@Test
-	public void shouldCalculateStatisticTest() {
-		WorkStatistic statistic = service.getStatistic(LocalDate.of(2016, 3, 1), 2L);
-		assertThat(statistic.getTimeWorked(), equalTo(780));
-		assertThat(statistic.getTimeForWeek(), equalTo(2340));
-		assertThat(statistic.getTimeForMonth(), equalTo(1620));
+		service = new ScheduleService(scheduleRepository, shopRepository);
 	}
 	
 	@Test
