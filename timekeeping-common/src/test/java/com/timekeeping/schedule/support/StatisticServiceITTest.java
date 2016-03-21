@@ -30,7 +30,7 @@ public class StatisticServiceITTest extends AbstractRepositoryIntegerationTest {
 	
 	@Test
 	public void shouldCalculateStatisticTest() {
-		WorkStatistic statistic = service.getStatistic(LocalDate.of(2016, 3, 1), 2L);
+		WorkingTimeStatistic statistic = service.getWorkingTimeStatistic(LocalDate.of(2016, 3, 1), 2L);
 		assertThat(statistic.getTimeWorked(), equalTo(780));
 		assertThat(statistic.getTimeForWeek(), equalTo(2340));
 		assertThat(statistic.getTimeForMonth(), equalTo(1620));

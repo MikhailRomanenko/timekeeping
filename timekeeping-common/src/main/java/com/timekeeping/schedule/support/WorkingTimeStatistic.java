@@ -10,14 +10,14 @@ import java.time.LocalDate;
  * @author Mikhail Romanenko
  *
  */
-public class WorkStatistic {
+public class WorkingTimeStatistic {
 	private LocalDate date;
 	private long employeeId;
 	private int timeForWeek;
 	private int timeWorked;
 	private int timeForMonth;
 
-	public WorkStatistic(LocalDate date, long employeeId, int timeForWeek, int timeWorked, int timeForMonth) {
+	public WorkingTimeStatistic(LocalDate date, long employeeId, int timeForWeek, int timeWorked, int timeForMonth) {
 		this.date = date;
 		this.employeeId = employeeId;
 		this.timeForWeek = timeForWeek;
@@ -57,7 +57,7 @@ public class WorkStatistic {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("WorkStatistic [employeeId: ").append(employeeId).append(", timeForWeek: ").append(timeForWeek)
+		builder.append("WorkingTimeStatistic [employeeId: ").append(employeeId).append(", timeForWeek: ").append(timeForWeek)
 				.append(", timeWorked: ").append(timeWorked).append(", timeForMonth: ").append(timeForMonth)
 				.append("]");
 		return builder.toString();

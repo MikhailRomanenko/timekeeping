@@ -1,6 +1,7 @@
 package com.timekeeping.schedule.support;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ import com.timekeeping.schedule.WorkType;
 import com.timekeeping.schedule.support.BreakPolicy;
 import com.timekeeping.schedule.support.DateUtils;
 import com.timekeeping.schedule.support.ScheduleItemRepository;
-import com.timekeeping.schedule.support.WorkStatistic;
+import com.timekeeping.schedule.support.WorkingTimeStatistic;
 
 /**
  * Service class that provides different kinds of the statistical data.
@@ -38,37 +39,46 @@ public class StatisticService {
 	 *            calculations are made according to this date
 	 * @param employeeId
 	 *            calculation are made for this employee
-	 * @return {@link WorkStatistic} object representing statistic
+	 * @return {@link WorkingTimeStatistic} object representing statistic
 	 */
-	public WorkStatistic getStatistic(LocalDate date, Long employeeId) {
-		int timeForWeek = getWorkingTime(employeeId, DateUtils.getWeekStart(date), DateUtils.getWeekEnd(date),
-				breakPolicy.mapper());
-		int timeWorked = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), date, breakPolicy.mapper());
-		int timeForMonth = getWorkingTime(employeeId, DateUtils.getMonthFirstDay(date), DateUtils.getMonthLastDay(date),
-				breakPolicy.mapper());
-		return new WorkStatistic(date, employeeId, timeForWeek, timeWorked, timeForMonth);
+	public WorkingTimeStatistic getWorkingTimeStatistic(LocalDate date, Long employeeId) {
+		final Predicate<? super ScheduledDay> filter = d -> d.getType().equals(WorkType.WORK);
+		int timeForWeek = getDurationTime(employeeId, DateUtils.getWeekStart(date), DateUtils.getWeekEnd(date),
+				filter ,breakPolicy.mapper());
+		int timeWorked = getDurationTime(employeeId, DateUtils.getMonthFirstDay(date), date, filter, breakPolicy.mapper());
+		int timeForMonth = getDurationTime(employeeId, DateUtils.getMonthFirstDay(date), DateUtils.getMonthLastDay(date),
+				filter, breakPolicy.mapper());
+		return new WorkingTimeStatistic(date, employeeId, timeForWeek, timeWorked, timeForMonth);
 	}
 
-	int getWorkingTime(Long employeeId, LocalDate from, LocalDate to, UnaryOperator<Integer> breakMapper) {
-		List<WorkingTime> days = scheduleItemRepository.findWorkingTimeByEmployeeIdAndDateRange(employeeId, from, to);
-		int time = days.stream().filter(d -> d.getType() == WorkType.WORK).map(WorkingTime::getDuration)
-				.map(breakMapper).collect(Collectors.summingInt(d -> d));
+	private int getDurationTime(Long employeeId, LocalDate from, LocalDate to,
+			Predicate<? super ScheduledDay> filter, UnaryOperator<Integer> mapper) {
+		List<ScheduledDay> days = scheduleItemRepository.findWorkingTimeByEmployeeIdAndDateRange(employeeId, from, to);
+		int time = days.stream().filter(filter).map(ScheduledDay::getDuration)
+				.map(mapper).collect(Collectors.summingInt(d -> d));
 		return time;
 	}
 }
 
-class WorkingTime {
+class ScheduledDay {
+	private final int start;
 	private final int duration;
 	private final WorkType type;
 
-	public WorkingTime(int duration, String type) {
+	public ScheduledDay(int start, int duration, String type) {
+		this.start = start;
 		this.duration = duration;
 		this.type = WorkType.valueOf(type);
 	}
 
-	public WorkingTime(int duration, WorkType type) {
+	public ScheduledDay(int start, int duration, WorkType type) {
+		this.start = start;
 		this.duration = duration;
 		this.type = type;
+	}
+	
+	int getStartTimr() {
+		return start;
 	}
 
 	int getDuration() {
