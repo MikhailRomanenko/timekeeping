@@ -12,7 +12,7 @@
 
 	<artifactId>timekeeping-common</artifactId>
 	<name>TimeKeeping::Common</name>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>

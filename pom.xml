@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>timekeeping-common</module>
+		<module>timekeeping-web</module>
 	</modules>
 
 	<dependencyManagement>
@@ -29,6 +30,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+			<groupId>com.timekeeping</groupId>
+			<artifactId>timekeeping-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 
