@@ -5,6 +5,7 @@ insert into position values(4, 'Sales', 'Sr. Saler');
 insert into position values(5, 'Stock', 'Stockmen');
 
 insert into shop values(1, 'City1', 'Street1', 'Shop1');
+insert into shop values(2, 'City2', 'Street2', 'Shop2');
 
 insert into employee values(1, true, 'FULL_TIME', 'Name1', 'Surname1', 1, 1);
 insert into employee values(2, true, 'FULL_TIME', 'Name2', 'Surname2', 2, 1);
@@ -28,5 +29,8 @@ insert into schedule_item values(2, 3, 840, 780, 'WORK');
 insert into schedule_item values(3, 3, 900, 780, 'WORK');
 
 insert into user values(1, 'user1', 'password', 'ROLE_USER');
+insert into user values(2, 'user2', 'password', 'ROLE_USER');
 
 insert into user_shop values(1, 1);
+insert into user_shop values(1, 2);
+insert into user_shop values(2, 2);
