@@ -1,6 +1,5 @@
 package com.timekeeping.shop.support;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class ShopService {
 	 */
 	public List<Shop> findByUserLogin(String login) {
 		List<Shop> result = shopRepository.findByUserLogin(login);
-		return result == null ? Collections.emptyList() : result;
+		return result;
 	}
 
 }

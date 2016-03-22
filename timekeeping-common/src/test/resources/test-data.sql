@@ -6,11 +6,14 @@ insert into position values(5, 'Stock', 'Stockmen');
 
 insert into shop values(1, 'City1', 'Street1', 'Shop1');
 insert into shop values(2, 'City2', 'Street2', 'Shop2');
+insert into shop values(3, 'City3', 'Street3', 'Shop3');
 
 insert into employee values(1, true, 'FULL_TIME', 'Name1', 'Surname1', 1, 1);
 insert into employee values(2, true, 'FULL_TIME', 'Name2', 'Surname2', 2, 1);
 insert into employee values(3, true, 'PART_TIME', 'Name3', 'Surname3', 3, 1);
 insert into employee values(4, false, 'FULL_TIME', 'Name4', 'Surname4', 3, 1);
+insert into employee values(5, true, 'PART_TIME', 'Name5', 'Surname5', 3, 2);
+insert into employee values(6, true, 'PART_TIME', 'Name6', 'Surname6', 3, 2);
 
 insert into schedule values(1, DATE '2016-02-29', 0, 1);
 insert into schedule values(2, DATE '2016-03-01', 1, 1);

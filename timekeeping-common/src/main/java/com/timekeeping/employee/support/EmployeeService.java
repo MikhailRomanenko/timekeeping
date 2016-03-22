@@ -34,7 +34,7 @@ public class EmployeeService {
 	 *            id of the shop
 	 * @return {@code List} of employees
 	 */
-	public List<Employee> getByShopId(Long shopId) {
+	public List<Employee> findByShopId(Long shopId) {
 		return employeeRepository.findByShopId(shopId);
 	}
 
