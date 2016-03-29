@@ -48,7 +48,7 @@ public final class EmployeeBuilder {
 		return this;
 	}
 	
-	public EmployeeBuilder id(Position position) {
+	public EmployeeBuilder position(Position position) {
 		this.position = position;
 		return this;
 	}
