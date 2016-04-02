@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.timekeeping.support.JView;
+
 /**
  * JPA entity representing a position that an employee could take.
  * 
@@ -19,7 +22,9 @@ public class Position {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Integer id;
+	@JsonView(JView.TimeTable.class)
 	private String name;
+	@JsonView(JView.TimeTable.class)
 	private String department;
 	
 	protected Position() {

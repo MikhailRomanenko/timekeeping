@@ -11,7 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.shop.Shop;
+import com.timekeeping.support.JView;
 
 /**
  * JPA entity representing an employee.
@@ -24,17 +26,23 @@ import com.timekeeping.shop.Shop;
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(JView.TimeTable.class)
 	private Long id;
 	@Column(name = "FIRST_NAME")
+	@JsonView(JView.TimeTable.class)
 	private String firstName;
 	@Column(name = "LAST_NAME")
+	@JsonView(JView.TimeTable.class)
 	private String lastName;
 	@ManyToOne
 	private Shop shop;
 	@ManyToOne
+	@JsonView(JView.TimeTable.class)
 	private Position position;
+	@JsonView(JView.TimeTable.class)
 	private boolean active = true;
 	@Enumerated(EnumType.STRING)
+	@JsonView(JView.TimeTable.class)
 	private EmploymentType employment;
 	
 	protected Employee() {

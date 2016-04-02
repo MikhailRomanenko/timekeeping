@@ -18,11 +18,15 @@ public final class ScheduleView {
 	
 	private Long shopId;
 	private LocalDate date;
-	private int version;
+	private int version = -1;
 	private Map<String, Map<Long, ScheduleItemView>> items = new HashMap<>();
 	
 	public static ScheduleView of(Schedule schedule) {
 		return new ScheduleView(schedule);
+	}
+	
+	public static ScheduleView emptyFor(long shopId, LocalDate date) {
+		return new ScheduleView(shopId, date);
 	}
 	
 	ScheduleView() {
@@ -34,6 +38,11 @@ public final class ScheduleView {
 		this.date = schedule.getDate();
 		this.version = schedule.getVersion();
 		convertToMap(schedule.getItems());
+	}
+	
+	private ScheduleView(long shopId, LocalDate date) {
+		this.shopId = shopId;
+		this.date = date;
 	}
 	
 	private void convertToMap(Collection<ScheduleItem> items) {
