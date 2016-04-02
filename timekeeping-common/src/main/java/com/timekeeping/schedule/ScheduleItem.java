@@ -11,7 +11,6 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.employee.Employee;
 
 /**
@@ -35,19 +34,14 @@ public class ScheduleItem {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "EMPLOYEE_ID")
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Employee employee;
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private int startTime;
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private int duration;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "WORK_TYPE")
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private WorkType type;
 	
-	protected ScheduleItem() {
-		
+	protected ScheduleItem() {		
 	}
 
 	public ScheduleItem(Schedule schedule, Employee employee, int startTime, int duration, WorkType type) {

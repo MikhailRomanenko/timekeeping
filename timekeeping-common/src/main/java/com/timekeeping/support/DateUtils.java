@@ -1,4 +1,4 @@
-package com.timekeeping.schedule.support;
+package com.timekeeping.support;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

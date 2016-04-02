@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.timekeeping.schedule.WorkType;
 import com.timekeeping.schedule.support.BreakPolicy;
-import com.timekeeping.schedule.support.DateUtils;
 import com.timekeeping.schedule.support.ScheduleItemRepository;
 import com.timekeeping.schedule.support.WorkingTimeStatistic;
+import com.timekeeping.support.DateUtils;
 
 /**
  * Service class that provides different kinds of the statistical data.

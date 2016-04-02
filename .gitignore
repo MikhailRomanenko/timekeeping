@@ -1,7 +1,7 @@
-/target/
-/.mvn/
-/.settings/
-/.classpath
-/.project
-/mvnw
-/mvnw.cmd
+**/target/
+**/.mvn/
+**/.settings/
+**/.classpath
+**/.project
+**/mvnw
+**/mvnw.cmd

@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.shop.Shop;
 
 /**
@@ -32,20 +31,15 @@ import com.timekeeping.shop.Shop;
 public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Long id;
 	@Column(name = "SCHEDULE_DATE")
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private LocalDate date;
 	@ManyToOne
 	@JoinColumn(name = "SHOP_ID")
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Shop shop;
 	@Version
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private int version;
 	@OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Set<ScheduleItem> items = new HashSet<>();
 
 	protected Schedule(){

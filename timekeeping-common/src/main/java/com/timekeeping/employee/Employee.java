@@ -11,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.timekeeping.schedule.ScheduleJsonView;
 import com.timekeeping.shop.Shop;
 
 /**
@@ -26,7 +24,6 @@ import com.timekeeping.shop.Shop;
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonView(ScheduleJsonView.ScheduleTableView.class)
 	private Long id;
 	@Column(name = "FIRST_NAME")
 	private String firstName;

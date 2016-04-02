@@ -1,4 +1,4 @@
-package com.timekeeping.schedule.support;
+package com.timekeeping.support;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import java.time.LocalDate;
 
 import org.junit.Test;
+
+import com.timekeeping.support.DateUtils;
 
 public class DateUtilsTest {
 
