@@ -1,6 +1,6 @@
 package com.timekeeping.schedule.support;
 
-import com.timekeeping.schedule.Schedule;
+import java.time.LocalDate;
 
 /**
  * Interface to provide custom implementation of the {@link ScheduleRepository} 
@@ -10,5 +10,12 @@ import com.timekeeping.schedule.Schedule;
  *
  */
 public interface ScheduleRepositoryCustom {
-	void saveOrUpdate(Schedule schedule);
+	
+	/**
+	 * Determine whether or not schedule with provided data exists.
+	 * @param shopId 
+	 * @param date
+	 * @return {@code true} if exist otherwise {@code false}
+	 */
+	boolean exists(Long shopId, LocalDate date);
 }

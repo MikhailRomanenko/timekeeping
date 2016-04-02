@@ -26,9 +26,9 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.timekeeping.AbstractRepositoryIntegerationTest;
+import com.timekeeping.employee.Position;
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.ScheduleItem;
-import com.timekeeping.shop.support.ShopRepository;
 
 public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	
@@ -39,7 +39,7 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	@Autowired
 	private ScheduleItemRepository scheduleItemRepository;
 	@Autowired
-	private ShopRepository shopRepository;
+	private ScheduleAdapter scheduleAdapter;
 	private ScheduleService service;
 	
 	private static Matcher<ScheduleItem> hasStartTime(final int startTime) {
@@ -95,7 +95,7 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 	
 	@Before
 	public void setUp() {
-		service = new ScheduleService(scheduleRepository, shopRepository);
+		service = new ScheduleService(scheduleRepository, scheduleAdapter);
 	}
 	
 	@Test
@@ -107,14 +107,14 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 		Long shopId = 1L;
 	
 		Set<ScheduleItem> items = new HashSet<>();
-		items.add(item().employee(employee().id(1L).build()).build());
-		items.add(item().employee(employee().id(2L).build()).build());
-		items.add(item().employee(employee().id(3L).build()).build());
+		items.add(item().employee(employee().position(new Position("Managenement", "Manager")).id(1L).build()).build());
+		items.add(item().employee(employee().position(new Position("Managenement", "Admin")).id(2L).build()).build());
+		items.add(item().employee(employee().position(new Position("Sales", "Saler")).id(3L).build()).build());
 		Schedule schedule = schedule()
 				.date(date).shop(shop().id(shopId).build())
 				.items(items).build();
 	
-		service.saveSchedule(schedule);
+		service.saveSchedule(ScheduleView.of(schedule));
 		em.flush();
 		
 		assertThat(scheduleItemRepository.count(), equalTo(totalItemsCount + items.size()));
@@ -131,13 +131,13 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 		Schedule existingSchedule = scheduleRepository.findOne(scheduleId);
 		
 		Set<ScheduleItem> items = new HashSet<>();
-		items.add(item().employee(employee().id(2L).build()).build());
-		items.add(item().employee(employee().id(4L).build()).build());
+		items.add(item().employee(employee().position(new Position("Managenement", "Manager")).id(2L).build()).build());
+		items.add(item().employee(employee().position(new Position("Managenement", "Manager")).id(4L).build()).build());
 		
 		Schedule schedule = schedule()
 				.date(existingSchedule.getDate()).shop(existingSchedule.getShop())
 				.items(items).build();
-		service.saveSchedule(schedule);
+		service.saveSchedule(ScheduleView.of(schedule));
 		em.flush();
 		
 		Schedule updatedSchedule = scheduleRepository.findOne(scheduleId);
@@ -157,32 +157,20 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 		Schedule existingSchedule = scheduleRepository.findOne(scheduleId);
 	
 		Set<ScheduleItem> items = new HashSet<>();
-		items.add(item().employee(employee().id(1L).build()).startTime(startTime).duration(duration).build());
-		items.add(item().employee(employee().id(2L).build()).startTime(startTime).duration(duration).build());
-		items.add(item().employee(employee().id(3L).build()).startTime(startTime).duration(duration).build());
+		items.add(item().employee(employee().position(new Position("Sales", "Saler")).id(1L).build()).startTime(startTime).duration(duration).build());
+		items.add(item().employee(employee().position(new Position("Sales", "Saler")).id(2L).build()).startTime(startTime).duration(duration).build());
+		items.add(item().employee(employee().position(new Position("Sales", "Saler")).id(3L).build()).startTime(startTime).duration(duration).build());
 	
 		Schedule schedule = schedule()
 				.date(existingSchedule.getDate()).shop(existingSchedule.getShop())
 				.items(items).build();
-		service.saveSchedule(schedule);
+		service.saveSchedule(ScheduleView.of(schedule));
 		em.flush();
 		
 		Schedule updatedSchedule = scheduleRepository.findOne(scheduleId);
 		assertThat(updatedSchedule.getItems(), everyItem(allOf(hasStartTime(startTime), hasDuration(duration))));
 		assertThat(scheduleItemRepository.count(), equalTo(totalItemsCount));
 		assertThat(scheduleRepository.count(), equalTo(totalSchedulesCount));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	@Transactional
-	public void saveWithWrongShopIdShouldRaiseExceptionTest() {
-		long shopId = 10L;
-		LocalDate date = LocalDate.of(2016, 3, 1);
-		Set<ScheduleItem> items = new HashSet<>();
-		Schedule schedule = schedule()
-				.date(date).shop(shop().id(shopId).build())
-				.items(items).build();
-		service.saveSchedule(schedule);
 	}
 	
 	@Test(expected = OptimisticLockingFailureException.class)
@@ -194,6 +182,6 @@ public class ScheduleServiceITTest extends AbstractRepositoryIntegerationTest {
 		Schedule schedule = schedule()
 				.date(date).shop(shop().id(shopId).build())
 				.items(items).version(0).id(2L).build();
-		service.saveSchedule(schedule);
+		service.saveSchedule(ScheduleView.of(schedule));
 	}
 }

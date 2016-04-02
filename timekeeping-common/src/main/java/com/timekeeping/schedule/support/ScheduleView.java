@@ -16,13 +16,17 @@ import com.timekeeping.schedule.ScheduleItem;
  */
 public final class ScheduleView {
 	
-	private final Long shopId;
-	private final LocalDate date;
-	private final int version;
-	private final Map<String, Map<Long, ScheduleItemView>> items = new HashMap<>();
+	private Long shopId;
+	private LocalDate date;
+	private int version;
+	private Map<String, Map<Long, ScheduleItemView>> items = new HashMap<>();
 	
 	public static ScheduleView of(Schedule schedule) {
 		return new ScheduleView(schedule);
+	}
+	
+	ScheduleView() {
+		
 	}
 	
 	private ScheduleView(Schedule schedule) {

@@ -10,13 +10,17 @@ import com.timekeeping.schedule.WorkType;
  */
 public final class ScheduleItemView {
 
-	private final Long employeeId;
-	private final int startTime;
-	private final int duration;
-	private final WorkType type;
+	private Long employeeId;
+	private int startTime;
+	private int duration;
+	private WorkType type;
 	
 	public static ScheduleItemView of(ScheduleItem item) {
 		return new ScheduleItemView(item);
+	}
+	
+	ScheduleItemView() {
+		
 	}
 	
 	private ScheduleItemView(ScheduleItem item) {
