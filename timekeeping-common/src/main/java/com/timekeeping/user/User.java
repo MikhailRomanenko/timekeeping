@@ -31,6 +31,14 @@ public class User {
 	protected User() {
 		
 	}
+	
+	public User(User user) {
+		this.id = user.id;
+		this.login = user.login;
+		this.password = user.password;
+		this.roles = user.roles;
+		this.shops = user.shops;
+	}
 
 	public User(String login, String password, String roles) {
 		this.login = login;
