@@ -12,7 +12,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>${basedir}/main/src</directory>
+				<directory>${basedir}/src/main</directory>
 			</resource>
 			<resource>
 				<directory>${basedir}/bower_components</directory>
