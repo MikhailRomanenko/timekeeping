@@ -1,68 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.timekeeping</groupId>
-    <artifactId>timekeeping</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>timekeeping-client</artifactId>
-  <name>TimeKeeping::Client</name>
-  
-      <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.timekeeping</groupId>
+		<artifactId>timekeeping</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>timekeeping-client</artifactId>
+	<name>TimeKeeping::Client</name>
+
+	<build>
 		<resources>
 			<resource>
-				<directory>${project.build.directory}/dist</directory>
+				<directory>${basedir}/main/src</directory>
 			</resource>
-            <resource>
-                <directory>${basedir}/bower_components</directory>
-            </resource>
+			<resource>
+				<directory>${basedir}/bower_components</directory>
+			</resource>
 		</resources>
 		<plugins>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
 				<configuration>
 					<installDirectory>target</installDirectory>
 				</configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
 							<nodeVersion>v4.2.1</nodeVersion>
 							<npmVersion>2.14.7</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>bower install</id>
-                        <goals>
-                            <goal>bower</goal>
-                        </goals>
-                    </execution>
+						</configuration>
+					</execution>
 					<execution>
-						<id>gulp build</id>
+						<id>npm install</id>
 						<goals>
-							<goal>gulp</goal>
+							<goal>npm</goal>
 						</goals>
 					</execution>
-                </executions>
-            </plugin>
-            <plugin>
+					<execution>
+						<id>bower install</id>
+						<goals>
+							<goal>bower</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/classes/public/</outputDirectory>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-  
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/classes/public/</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
