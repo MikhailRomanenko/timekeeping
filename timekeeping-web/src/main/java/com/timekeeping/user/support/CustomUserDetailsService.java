@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.timekeeping.user.User;
 
@@ -17,6 +18,7 @@ import com.timekeeping.user.User;
  * @author Mikhail Romanenko
  *
  */
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	private final UserRepository userRepository;
