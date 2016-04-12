@@ -13,16 +13,4 @@ public class TimekeepingWebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TimekeepingWebApplication.class, args);
 	}
-	
-	@Profile("dev")
-	@Configuration
-	static class MvcConfig extends WebMvcConfigurerAdapter {
-
-		@Override
-		public void addViewControllers(ViewControllerRegistry registry) {
-			registry.addViewController("/login").setViewName("login");
-			super.addViewControllers(registry);
-		}
-		
-	}
 }

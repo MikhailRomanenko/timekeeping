@@ -1,7 +1,9 @@
 @CHARSET "UTF-8";
+
+body { padding-top: 70px; }
 .form-signin {
   max-width: 330px;
-  padding: 40px 15px;
+  padding: -30px 15px 40px 15px;
   margin: 0 auto;
 }
 .form-signin .form-signin-heading,
