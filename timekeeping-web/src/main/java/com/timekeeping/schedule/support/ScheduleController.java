@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.employee.Employee;
 import com.timekeeping.employee.support.EmployeeService;
 import com.timekeeping.schedule.Schedule;
+import com.timekeeping.schedule.WorkType;
 import com.timekeeping.shop.Shop;
 import com.timekeeping.shop.support.ShopService;
 import com.timekeeping.support.JView;
@@ -49,17 +50,18 @@ public class ScheduleController {
 		Assert.notNull(user);
 		List<Shop> shops = shopService.findByUserLogin(user.getLogin());
 		model.addAttribute("shops", shops);
+		model.addAttribute("workTypes", WorkType.values());
 		return SCHEDULE_VIEW;
 	}
 	
-	@RequestMapping(value = "api/shop/{shopId}/employees", method = RequestMethod.GET)
+	@RequestMapping(value = "api/shop/{shopId:[0-9]+}/employees", method = RequestMethod.GET)
 	@ResponseBody
 	@JsonView(JView.TimeTable.class)
 	public Map<Long, Employee> getEmployees(@PathVariable Long shopId) {
 		return employeeViewAdapter.toMapView(employeeService.findByShopId(shopId));
 	}
 	
-	@RequestMapping(value = "api/schedule/{shopId:[0-9]+}/{date}", method = RequestMethod.GET)
+	@RequestMapping(value = "api/schedule/{shopId:[0-9]+}/{date:\\d{4}-\\d{2}-\\d{2}}", method = RequestMethod.GET)
 	@ResponseBody
 	public ScheduleView getSchedule(@PathVariable Long shopId, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		Schedule schedule = scheduleService.findSchedule(shopId, date);
