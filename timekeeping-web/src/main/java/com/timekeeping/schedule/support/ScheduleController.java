@@ -2,6 +2,7 @@ package com.timekeeping.schedule.support;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,12 +33,15 @@ public class ScheduleController {
 	private final ScheduleService scheduleService;
 	private final EmployeeService employeeService;
 	private final ShopService shopService;
+	private final EmployeeViewAdapter employeeViewAdapter;
 	
 	@Autowired
-	public ScheduleController(ScheduleService scheduleService, EmployeeService employeeService, ShopService shopService) {
+	public ScheduleController(ScheduleService scheduleService, EmployeeService employeeService,
+			ShopService shopService, EmployeeViewAdapter employeeViewAdapter) {
 		this.scheduleService = scheduleService;
 		this.employeeService = employeeService;
 		this.shopService = shopService;
+		this.employeeViewAdapter = employeeViewAdapter;
 	}
 	
 	@RequestMapping(value = "schedule", method = RequestMethod.GET)
@@ -48,11 +52,11 @@ public class ScheduleController {
 		return SCHEDULE_VIEW;
 	}
 	
-	@RequestMapping(value = "api/employee/{shopId}", method = RequestMethod.GET)
+	@RequestMapping(value = "api/shop/{shopId}/employees", method = RequestMethod.GET)
 	@ResponseBody
 	@JsonView(JView.TimeTable.class)
-	public List<Employee> getEmployees(@PathVariable Long shopId) {
-		return employeeService.findByShopId(shopId);
+	public Map<Long, Employee> getEmployees(@PathVariable Long shopId) {
+		return employeeViewAdapter.toMapView(employeeService.findByShopId(shopId));
 	}
 	
 	@RequestMapping(value = "api/schedule/{shopId:[0-9]+}/{date}", method = RequestMethod.GET)
