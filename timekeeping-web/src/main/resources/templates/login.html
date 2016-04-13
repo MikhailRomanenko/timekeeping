@@ -12,7 +12,7 @@
 	<div class="container">
 		<form class="form-signin" th:action="@{/login}" method="post">
 			<h2 class="form-signin-heading">Please log in</h2>
-			<div th:if="${param.error}" class="alert alert-error">
+			<div th:if="${param.error}" class="alert alert-danger">
                     Invalid username and password.
             </div>
             <div th:if="${param.logout}" class="alert alert-success">
