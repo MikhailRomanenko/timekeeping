@@ -17,9 +17,9 @@
 	</properties>
 
 	<modules>
+		<module>timekeeping-client</module>
 		<module>timekeeping-common</module>
 		<module>timekeeping-web</module>
-		<module>timekeeping-client</module>
 	</modules>
 
 	<dependencyManagement>

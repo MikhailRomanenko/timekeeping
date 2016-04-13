@@ -22,13 +22,13 @@ public class SecurityCongif extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/resources/static/**").permitAll()
+				.antMatchers("/static/**").permitAll()
 				.antMatchers("/schedule/**", "/api/**").hasRole("USER")
 				.anyRequest().authenticated()
 				.and()
-			.formLogin().permitAll()
+			.formLogin().loginPage("/login").permitAll()
 			.and()
-			.logout().permitAll().and();
+			.logout().permitAll();
 	}
 
 }
