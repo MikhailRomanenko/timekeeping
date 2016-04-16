@@ -3,10 +3,12 @@ package com.timekeeping.employee.support;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.timekeeping.employee.Employee;
+import com.timekeeping.shop.Shop;
 
 /**
  * Service providing high-level data access and other {@link Employee}-related
@@ -34,6 +36,7 @@ public class EmployeeService {
 	 *            id of the shop
 	 * @return {@code List} of employees
 	 */
+	@PreAuthorize("hasRole('ADMIN') || hasPermission(#shopId, 'read')")
 	public List<Employee> findByShopId(Long shopId) {
 		return employeeRepository.findByShopId(shopId);
 	}

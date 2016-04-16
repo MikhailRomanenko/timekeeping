@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,11 @@ import com.timekeeping.shop.support.ShopService;
 import com.timekeeping.support.JView;
 import com.timekeeping.user.User;
 
+/**
+ * Controller is in charge of user interactions and operations on schedule objects.
+ * @author Mikhail Romanenko
+ *
+ */
 @Controller
 public class ScheduleController {
 	
@@ -50,7 +56,7 @@ public class ScheduleController {
 		Assert.notNull(user);
 		List<Shop> shops = shopService.findByUserLogin(user.getLogin());
 		model.addAttribute("shops", shops);
-		model.addAttribute("workTypes", WorkType.values());
+		model.addAttribute("workTypes", StringUtils.arrayToDelimitedString(WorkType.values(), ","));
 		return SCHEDULE_VIEW;
 	}
 	

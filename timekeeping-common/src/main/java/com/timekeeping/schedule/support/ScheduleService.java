@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,7 @@ public class ScheduleService {
 	 * @return {@link Schedule} entity, otherwise returns null.
 	 */
 	@Transactional(readOnly = true)
+	@PreAuthorize("hasRole('ADMIN') || hasPermission(#shopId, 'read')")
 	public Schedule findSchedule(long shopId, LocalDate date) {
 		return scheduleRepository.findByShopIdAndDate(shopId, date);
 	}
@@ -54,6 +56,7 @@ public class ScheduleService {
 	 *            {@code ScheduleView} of the schedule to save/update.
 	 */
 	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasRole('ADMIN') || hasPermission(#scheduleView.shopId, 'read')")
 	public void saveSchedule(ScheduleView scheduleView) {
 		Assert.notNull(scheduleView);
 		Schedule schedule = null;
@@ -82,6 +85,7 @@ public class ScheduleService {
 	 * @param date
 	 *            {@code LocalDate} of the schedule. Must be not null.
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	public void removeSchedule(long shopId, LocalDate date) {
 		scheduleRepository.deleteByShopIdAndDate(shopId, date);
 	}
