@@ -40,7 +40,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li th:each="shop : ${shops}">
-							<a href="#" th:text="${shop.name}">Shop1</a>
+							<a href="#" th:attr="data-shop-id=${shop.id}" th:text="${shop.name}">Shop1</a>
 						</li>
 					</ul>
 				</li>

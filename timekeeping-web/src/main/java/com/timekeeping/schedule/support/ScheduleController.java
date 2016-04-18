@@ -51,7 +51,7 @@ public class ScheduleController {
 		this.employeeViewAdapter = employeeViewAdapter;
 	}
 	
-	@RequestMapping(value = "schedule", method = RequestMethod.GET)
+	@RequestMapping(value = {"schedule", "/"}, method = RequestMethod.GET)
 	public String show(@AuthenticationPrincipal User user, Model model) {
 		Assert.notNull(user);
 		List<Shop> shops = shopService.findByUserLogin(user.getLogin());
