@@ -4,15 +4,15 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{static/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{static/css/main.css}" />
 <title>TimeKeeping::Login</title>
 </head>
 <body>
 	<div class="container">
 		<form class="form-signin" th:action="@{/login}" method="post">
 			<h2 class="form-signin-heading">Please log in</h2>
-			<div th:if="${param.error}" class="alert alert-error">
+			<div th:if="${param.error}" class="alert alert-danger">
                     Invalid username and password.
             </div>
             <div th:if="${param.logout}" class="alert alert-success">

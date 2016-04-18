@@ -2,17 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"></meta>
-<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta name="_work_types" th:content="${workTypes}"/>
+<link rel="stylesheet" type="text/css" th:href="@{static/css/main.css}"
  href="../../../../../../timekeeping-client/src/main/css/main.css" />
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}"
+<link rel="stylesheet" type="text/css" th:href="@{static/bootstrap/css/bootstrap.min.css}"
  href="../../../../../../timekeeping-client/bower_components/bootstrap/css/bootstrap.min.css" />
-<script type="text/javascript" th:src="@{/angular/angular.min.js}" 
+<script type="text/javascript" th:src="@{static/angular/angular.min.js}" 
  src="../../../../../../timekeeping-client/bower_components/angular/angular.min.js"></script>
-<script type="text/javascript" th:src="@{/jquery/jquery.min.js}" 
+<script type="text/javascript" th:src="@{static/jquery/jquery.min.js}" 
  src="../../../../../../timekeeping-client/bower_components/jquery/jquery.min.js"></script>
-<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}" 
+<script type="text/javascript" th:src="@{static/bootstrap/js/bootstrap.min.js}" 
  src="../../../../../../timekeeping-client/bower_components/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" th:src="@{/angular-bootstrap/ui-bootstrap-tpls.min.js}"
+<script type="text/javascript" th:src="@{static/angular-bootstrap/ui-bootstrap-tpls.min.js}"
  src="../../../../../../timekeeping-client/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <title>TimeKeeping::Schedule</title>
 </head>
@@ -37,7 +40,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li th:each="shop : ${shops}">
-							<a href="#" th:text="${shop.name}">Shop1</a>
+							<a href="#" th:attr="data-shop-id=${shop.id}" th:text="${shop.name}">Shop1</a>
 						</li>
 					</ul>
 				</li>
@@ -52,7 +55,6 @@
 		</div>
 	</div>
 </nav>
-
 
 </body>
 </html>
