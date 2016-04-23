@@ -10,28 +10,25 @@ angular.module('schedule')
         var csrfValue = $("meta[name='_csrf']").attr("content");
         var csrf = {};
         csrf[csrfHeader] = csrfValue;
-
         return {
             getEmployees: function(shopId) {
                 var path = '/api/shop/' + shopId + '/employees';
                 return $http.get(path).then(function(response){
                     return response.data;
-                }, function(response){
-                    $log.error('Unable to load employees data. Reason: ' + response.statusText);
-                    return response;
+                }, function(error){
+                    $log.error('Unable to load employees data. Reason: ' + error.statusText);
+                    throw error;
                 });
             },
-
             getSchedule: function(shopId, date) {
                 var path = '/api/schedule/' + shopId + '/' + $filter('date')(date, 'yyyy-MM-dd');
                 return $http.get(path).then(function(response){
                     return response.data;
-                }, function(response){
-                    $log.error('Unable to load schedule data. Reason: ' + response.statusText);
-                    return response;
+                }, function(error){
+                    $log.error('Unable to load schedule data. Reason: ' + error.statusText);
+                    throw error;
                 });
             },
-
             saveSchedule: function(schedule) {
                 var path = '/api/schedule';
                 return $http.post(path, schedule, {
@@ -39,18 +36,15 @@ angular.module('schedule')
                 }).then(function(response){
                     $log.info('Schedule successfully saved.');
                     return response.data;
-                }, function(response){
-                    $log.error('Unable to save schedule. Reason: ' + response.statusText);
-                    $log.error(angular.toJson(response, true));
-                    return response;
+                }, function(error){
+                    $log.error('Unable to save schedule. Reason: ' + error.statusText);
+                    throw error;
                 });
             },
-
             getAvailableEmployeesKeys: function(employees, items) {
                 var activeEmployeesKeys = Object.keys(employees).filter(function(empKey){
                     return employees[empKey].active;
                 });
-
                 var grouped = {};
                 activeEmployeesKeys.forEach(function(empKey){
                     var dep = employees[empKey].position.department;
@@ -60,20 +54,51 @@ angular.module('schedule')
                         grouped[dep].push(empKey);
                     }
                 });
-
                 return grouped;
             }
         };
     }])
-    .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', function($scope, $q, ScheduleService){
-
+    .factory('RequestAnimationService', ['$uibModal', function($uibModal){
+        var modal;
+        var isOpened = false;
+        return {
+            show: function(){
+                if(!isOpened) {
+                    modal = $uibModal.open({
+                        backdrop: 'static',
+                        size: 'sm',
+                        template: '<div class="sk-cube-grid">'+
+                        '<div class="sk-cube sk-cube1"></div>'+
+                        '<div class="sk-cube sk-cube2"></div>'+
+                        '<div class="sk-cube sk-cube3"></div>'+
+                        '<div class="sk-cube sk-cube4"></div>'+
+                        '<div class="sk-cube sk-cube5"></div>'+
+                        '<div class="sk-cube sk-cube6"></div>'+
+                        '<div class="sk-cube sk-cube7"></div>'+
+                        '<div class="sk-cube sk-cube8"></div>'+
+                        '<div class="sk-cube sk-cube9"></div>'+
+                        '</div>',
+                        windowTopClass: 'transparent'
+                    });
+                    isOpened = true;
+                }
+            },
+            hide: function(){
+                if(modal){
+                    modal.close();
+                    isOpened = false;
+                }
+            }
+        };
+    }])
+    .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', 'RequestAnimationService',
+        function($scope, $q, ScheduleService, RequestAnimationService){
         $scope.isVisible = false;
         $scope.allEmployees = {};
         $scope.schedule = {};
         $scope.employeesToAdd = {};
         $scope.date = Date.now();
         $scope.dateOptions = {
-            datepickerMode: 'day',
             minMode: 'day',
             maxMode: 'day',
             showWeeks: false,
@@ -86,30 +111,29 @@ angular.module('schedule')
             var target = $(event.target);
             $scope.shopId = target.data('shopId');
             $scope.shopName = target.text();
-            var employeesPromise = ScheduleService.getEmployees($scope.shopId)
+            RequestAnimationService.show();
+            $q.all([ScheduleService.getEmployees($scope.shopId), ScheduleService.getSchedule($scope.shopId, $scope.date)])
                 .then(function(data){
-                    $scope.allEmployees = data;
-                });
-            var schedulePromise = ScheduleService.getSchedule($scope.shopId, $scope.date)
-                .then(function(data){
-                    $scope.schedule = data;
-                });
-
-            $q.all([employeesPromise, schedulePromise])
-                .then(function(){
+                    $scope.allEmployees = data[0];
+                    $scope.schedule = data[1];
                     $scope.employeesToAdd =
                         ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, $scope.schedule.items);
                     $scope.isVisible = true;
-                });
+                }).then(function(){
+                    RequestAnimationService.hide();
+            });
         };
 
         $scope.loadSchedule = function(shopId, date) {
+            RequestAnimationService.show();
             ScheduleService.getSchedule(shopId, date)
-                .then(function(data){
-                    $scope.schedule = data;
+                .then(function(schedule){
+                    $scope.schedule = schedule;
                     $scope.employeesToAdd =
-                        ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, data.items);
-                });
+                        ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, schedule.items);
+                }).then(function(){
+                    RequestAnimationService.hide();
+            });
         };
 
         $scope.clearItems = function() {
@@ -117,12 +141,13 @@ angular.module('schedule')
         };
 
         $scope.saveSchedule = function() {
+            RequestAnimationService.show();
             ScheduleService.saveSchedule($scope.schedule)
                 .then(function(version){
                     $scope.schedule.version = version;
-                }, function(data){
-
-                });
+                }).then(function(){
+                    RequestAnimationService.hide();
+            });
         };
 
     }]);
