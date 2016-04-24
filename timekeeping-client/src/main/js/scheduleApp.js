@@ -2,9 +2,19 @@
  *
  */
 
-angular.module('schedule', ['ui.bootstrap']);
+angular.module('schedule', ['ui.bootstrap', 'ui-notification']);
 
 angular.module('schedule')
+    .config(function(NotificationProvider){
+        NotificationProvider.setOptions({
+            startTop: 70,
+            startRight: 0,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'center',
+            positionY: 'top'
+        });
+    })
     .factory('ScheduleService', ['$http', '$filter', '$log', function($http, $filter, $log){
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var csrfValue = $("meta[name='_csrf']").attr("content");
@@ -91,8 +101,8 @@ angular.module('schedule')
             }
         };
     }])
-    .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', 'RequestAnimationService',
-        function($scope, $q, ScheduleService, RequestAnimationService){
+    .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', 'RequestAnimationService', 'Notification',
+        function($scope, $q, ScheduleService, RequestAnimationService, Notification){
         $scope.isVisible = false;
         $scope.allEmployees = {};
         $scope.schedule = {};
@@ -119,6 +129,9 @@ angular.module('schedule')
                     $scope.employeesToAdd =
                         ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, $scope.schedule.items);
                     $scope.isVisible = true;
+                }, function(error){
+                    Notification.error('<p>Error occurred while loading data.</p>' +
+                        '<p>Reason: '+ error.statusText +'.</p>');
                 }).then(function(){
                     RequestAnimationService.hide();
             });
@@ -131,6 +144,9 @@ angular.module('schedule')
                     $scope.schedule = schedule;
                     $scope.employeesToAdd =
                         ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, schedule.items);
+                }, function(error){
+                    Notification.error('<p>Error occurred while loading schedule data.</p>' +
+                        '<p>Reason: '+ error.statusText +'.</p>');
                 }).then(function(){
                     RequestAnimationService.hide();
             });
@@ -145,6 +161,10 @@ angular.module('schedule')
             ScheduleService.saveSchedule($scope.schedule)
                 .then(function(version){
                     $scope.schedule.version = version;
+                    Notification.success('<p>Schedule successfully saved. </p>');
+                }, function(error){
+                    Notification.error('<p>Schedule has not been saved. </p>' +
+                        '<p>Reason: ' + error.statusText + '</p>');
                 }).then(function(){
                     RequestAnimationService.hide();
             });
