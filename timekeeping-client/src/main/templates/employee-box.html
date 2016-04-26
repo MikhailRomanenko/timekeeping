@@ -1,0 +1,22 @@
+<div class="dropdown">
+    <button id="empMenu" type="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" class="btn btn-primary">Employees
+        <span class="caret"></span></button>
+    <div class="dropdown-menu employee-box" aria-labelledby="empMenu" ng-click="$event.stopPropagation();">
+        <div ng-repeat="dept in departments | orderBy:'department'" class="department">
+            <p class="ellipsis">{{dept.department}}</p>
+            <div ng-repeat="emp in dept | orderBy:['lastName', 'firstName']" class="container-fluid">
+                <p class="ellipsis">{{emp.position.name | uppercase}}</p>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <p class="ellipsis">{{emp.lastName + ' ' + emp.firstName}}</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <button ng-click="select({dept: dept.department, empId: emp.id})" class="close">
+                            <span aria-hidden="true">+</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

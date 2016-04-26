@@ -128,3 +128,54 @@ body { padding-top: 70px; }
       transform: scale3D(0, 0, 1);
     }
 }
+
+/*employee-box directive styles*/
+
+.employee-box {
+  max-height: 350px;
+  max-width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.department {
+  padding: 0px 0px 3px 0px;
+}
+
+.department > p {
+  font-weight: 600;
+  padding: 3px 10px 3px 10px;
+  margin: 0px;
+}
+
+.department > .container-fluid {
+  padding: 0px 10px 0px 15px;
+}
+
+.department > .container-fluid:hover {
+  background-color: #f5f5f5;
+}
+
+.department > .container-fluid > p:first-child {
+  margin: 0px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #656565;
+}
+
+.department .row {
+  margin-bottom: 5px;
+}
+
+.department .row .ellipsis {
+  margin: 0px;
+  padding: 0px;
+}
+
+.ellipsis {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

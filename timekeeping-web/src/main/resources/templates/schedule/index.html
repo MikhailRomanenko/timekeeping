@@ -13,7 +13,9 @@
 	<script type="text/javascript" th:src="@{static/bootstrap/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{static/angular-bootstrap/ui-bootstrap-tpls.min.js}"></script>
 	<script type="text/javascript" th:src="@{static/angular-ui-notification/dist/angular-ui-notification.min.js}"></script>
+	<script type="text/javascript" th:src="@{static/js/employeeBox.js}"></script>
 	<script type="text/javascript" th:src="@{static/js/scheduleApp.js}"></script>
+
 	<title>TimeKeeping::Schedule</title>
 </head>
 <body ng-controller="ScheduleController">
@@ -62,8 +64,6 @@
 		<button class="btn btn-primary" ng-click="saveSchedule()">Save</button>
 		<button class="btn btn-primary" ng-click="clearItems()">Clear</button>
 	</div>
-
-	<div class="container"></div>
 </div>
 
 </body>
