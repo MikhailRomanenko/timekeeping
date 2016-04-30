@@ -179,3 +179,24 @@ body { padding-top: 70px; }
   text-overflow: ellipsis;
 }
 
+/*timetable directive styles*/
+
+.time-table {
+  padding: 0px;
+  display: block;
+  position: relative;
+  border: 2px solid #C7C7C7;
+}
+
+.time-table-grid {
+  padding: 0px;
+  margin: 0px;
+  display: block;
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  width: 0px;
+  border-left: 2px solid #C7C7C7;
+  z-index: 0;
+}
+
