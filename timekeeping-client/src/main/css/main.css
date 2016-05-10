@@ -181,11 +181,70 @@ body { padding-top: 70px; }
 
 /*timetable directive styles*/
 
+@media (max-width: 767px) {
+  .time-table {
+    font-size: 10px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .time-table {
+    font-size: 12px;
+  }
+}
+@media (min-width: 992px) {
+  .time-table {
+    font-size: 14px;
+  }
+}
 .time-table {
   padding: 0px;
   display: block;
   position: relative;
-  border: 2px solid #C7C7C7;
+  border: 1px solid #d4d4d4;
+  border-top: none;
+  min-width: 720px;
+}
+
+.time-table-header {
+  background-color: #d4d4d4;
+  text-align: center;
+  font-size: 120%;
+  font-weight: bold;
+  z-index: 0;
+}
+
+.time-table div:not(.time-line-area):not(.time-line-data) {
+  margin: 0px;
+  padding: 0px;
+}
+
+.time-table > div > .container-fluid {
+  border-bottom: 1px solid #d4d4d4;
+}
+.time-table > div > .container-fluid:last-child {
+  border-bottom-style: none;
+}
+
+.time-line-data .dropdown-toggle.close {
+  float: none;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+.time-line-data .open > .dropdown-toggle.close {
+  opacity: 0.5;
+}
+.time-line-data .col-xs-1 {
+  text-align: center;
+}
+.time-line-data .dropdown-menu {
+  font-size: 100%;
+}
+
+.time-line-data > .row > div:last-child {
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: right;
 }
 
 .time-table-grid {
@@ -196,7 +255,32 @@ body { padding-top: 70px; }
   top: 0px;
   height: 100%;
   width: 0px;
-  border-left: 2px solid #C7C7C7;
-  z-index: 0;
+  border-left: 1px solid #d4d4d4;
+  z-index: -1;
+}
+
+.time-line-data {
+  float: left;
+}
+
+.time-line-area, .time-line-data {
+  padding-bottom: 0.3%;
+  padding-top: 0.3%;
+  margin: 0px;
+}
+
+.time-line-area > div {
+  background-color: #0b93d5;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.ng-hide:not(.ng-hide-animate) {
+  display: block!important;
+  overflow: hidden;
+  height: 0px;
+  visibility: hidden;
 }
 

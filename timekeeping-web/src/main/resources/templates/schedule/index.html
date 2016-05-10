@@ -2,13 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" ng-app="schedule">
 <head>
 	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 	<meta name="_work_types" th:content="${workTypes}"/>
-	<link rel="stylesheet" type="text/css" th:href="@{static/css/main.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{static/bootstrap/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{static/jquery-ui/themes/smoothness/jquery-ui.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{static/angular-ui-notification/dist/angular-ui-notification.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{static/css/main.css}"/>
 	<script type="text/javascript" th:src="@{static/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{static/jquery-ui/jquery-ui.min.js}"></script>
 	<script type="text/javascript" th:src="@{static/bootstrap/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{static/angular/angular.min.js}"></script>
 	<script type="text/javascript" th:src="@{static/angular-bootstrap/ui-bootstrap-tpls.min.js}"></script>
@@ -20,7 +23,6 @@
 	<title>TimeKeeping::Schedule</title>
 </head>
 <body ng-controller="ScheduleController">
-
 <nav class="navbar navbar-default navbar-fixed-top" th:with="user=${#httpServletRequest.userPrincipal?.principal}">
 	<div class="container">
 		<div class="navbar-header">
@@ -58,17 +60,21 @@
 </nav>
 
 <div class="container" ng-show="isVisible">
-	<h2>{{shopName}}<small>{{date | date:'yyyy-MM-dd'}}</small></h2>
-	<div class="container">
+	<div class="row">
+		<h2>{{shopName}}
+			<small>{{date | date:'yyyy-MM-dd'}}</small>
+		</h2>
+	</div>
+	<div class="row">
 		<uib-datepicker ng-model="date" datepicker-options="dateOptions"
 						ng-change="loadSchedule(shopId, date)"></uib-datepicker>
 		<button class="btn btn-primary" ng-click="saveSchedule()">Save</button>
 		<button class="btn btn-primary" ng-click="clearItems()">Clear</button>
 	</div>
-</div>
+	<div class="row">
+		<time-table></time-table>
+	</div>
 
-<div class="container" ng-controller="TimeTableTestController">
-	<time-table></time-table>
 </div>
 
 </body>

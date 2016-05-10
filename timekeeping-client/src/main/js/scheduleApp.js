@@ -1,7 +1,3 @@
-/**
- *
- */
-
 angular.module('schedule', ['ui.bootstrap', 'ui-notification', 'TimeTable']);
 
 angular.module('schedule')

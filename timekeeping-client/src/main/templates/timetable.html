@@ -1,5 +1,6 @@
-<div class="container time-table">
-    <p>Min : max: {{min}} : {{max}}</p>
-    <p>Parts : step {{partsPerHour}} : {{step}}</p>
-    <p>TimeArea : Unit {{timeAreaWidth}} : {{unitWidth}}</p>
+<div class="container-fluid time-table" ng-show="visible()">
+    <div ng-repeat="dept in schedule">
+        <div class="time-table-header">{{dept.department}}</div>
+        <time-line ng-repeat="schLine in dept"></time-line>
+    </div>
 </div>
