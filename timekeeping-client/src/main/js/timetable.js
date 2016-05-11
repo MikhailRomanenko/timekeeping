@@ -187,10 +187,12 @@ angular.module('TimeTable')
                         }
                         return false;
                     });
+                    var removedEmployeeId = line.employeeId;
                     $scope.schedule[iDept].splice(iRemove, 1);
                     if($scope.schedule[iDept].length === 0) {
                         $scope.schedule.splice(iDept, 1);
                     }
+                   $scope.onRemove({id: removedEmployeeId});
                 };
             }],
             link: function(scope, element){
@@ -251,7 +253,8 @@ angular.module('TimeTable')
                 schedule: '=',
                 minMax: '&',
                 step: '&',
-                workTypes: '&'
+                workTypes: '&',
+                onRemove: '&remove'
             },
             controller: ['$scope', function($scope) {
                 $scope.visible = function() {
