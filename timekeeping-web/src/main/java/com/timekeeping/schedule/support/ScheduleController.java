@@ -1,24 +1,6 @@
 package com.timekeeping.schedule.support;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.annotation.JsonView;
-import com.timekeeping.employee.Employee;
 import com.timekeeping.employee.support.EmployeeService;
 import com.timekeeping.schedule.Schedule;
 import com.timekeeping.schedule.WorkType;
@@ -26,6 +8,17 @@ import com.timekeeping.shop.Shop;
 import com.timekeeping.shop.support.ShopService;
 import com.timekeeping.support.JView;
 import com.timekeeping.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Controller is in charge of user interactions and operations on schedule objects.
@@ -63,8 +56,8 @@ public class ScheduleController {
 	@RequestMapping(value = "api/shop/{shopId:[0-9]+}/employees", method = RequestMethod.GET)
 	@ResponseBody
 	@JsonView(JView.TimeTable.class)
-	public Map<Long, Employee> getEmployees(@PathVariable Long shopId) {
-		return employeeViewAdapter.toMapView(employeeService.findByShopId(shopId));
+	public List<?> getEmployees(@PathVariable Long shopId) {
+		return employeeViewAdapter.adapt(employeeService.findByShopId(shopId));
 	}
 	
 	@RequestMapping(value = "api/schedule/{shopId:[0-9]+}/{date:\\d{4}-\\d{2}-\\d{2}}", method = RequestMethod.GET)
