@@ -260,6 +260,10 @@ angular.module('TimeTable')
                 $scope.visible = function() {
                     return $scope.schedule && $scope.schedule.length;
                 };
+
+                $scope.hasWorkTypes = function() {
+                    return $scope.workTypes && $scope.workTypes.length > 1;
+                };
             }],
             link: function(scope, elem){
                 var steps = timeTableDefaults.steps,

@@ -225,15 +225,15 @@ body { padding-top: 70px; }
   border-bottom-style: none;
 }
 
-.time-line-data .dropdown-toggle.close {
+.time-line-data .dropdown-toggle.close, .time-line-data .col-xs-1 > .close {
   float: none;
   font-size: inherit;
-  font-weight: inherit;
   line-height: inherit;
 }
 .time-line-data .open > .dropdown-toggle.close {
   opacity: 0.5;
 }
+
 .time-line-data .col-xs-1 {
   text-align: center;
 }
