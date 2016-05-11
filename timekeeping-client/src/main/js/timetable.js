@@ -87,7 +87,9 @@ angular.module('TimeTable')
             },
             step = 15,
             timeAreaWidthRatio = 0.75,
-            steps = [10, 15, 30, 60];
+            steps = [10, 15, 30, 60],
+            tTableTemplateURL = '../templates/timetable.html',
+            tLineTemplateURL = '../templates/timeline.html';
 
         function acceptMinMax(newMinMax) {
             if(!newMinMax || !angular.isNumber(newMinMax.min) || !angular.isNumber(newMinMax.max)) return;
@@ -133,6 +135,12 @@ angular.module('TimeTable')
                 if(angular.isNumber(newRatio) && newRatio >= 0.3 && newRatio <= 0.9)
                     timeAreaWidthRatio = newRatio;
             },
+            setTimeTableTemplateUrl: function(url) {
+                tTableTemplateURL = url;
+            },
+            setTimeLineTemplateUrl: function(url) {
+                tLineTemplateURL = url;
+            },
             $get: function() {
                 return {
                     normalizeMinMax: function(mm) {
@@ -145,7 +153,9 @@ angular.module('TimeTable')
                     minMax: minMax,
                     step: step,
                     steps: steps,
-                    timeAreaRatio: timeAreaWidthRatio
+                    timeAreaRatio: timeAreaWidthRatio,
+                    tableTemplate: tTableTemplateURL,
+                    lineTemplate: tLineTemplateURL
                 }
             }
         }
@@ -156,7 +166,7 @@ angular.module('TimeTable')
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: '../templates/timeline.html',
+            templateUrl: timeTableDefaults.lineTemplate,
             scope: false,
             require: '^^timeTable',
             controller: ['$scope', function($scope){
@@ -236,7 +246,7 @@ angular.module('TimeTable')
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: '../templates/timetable.html',
+            templateUrl: timeTableDefaults.tableTemplate,
             scope: {
                 schedule: '=',
                 minMax: '&',
