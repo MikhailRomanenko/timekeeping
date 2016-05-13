@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.timekeeping.shop.Shop;
 
 /**
@@ -39,6 +40,7 @@ public class Schedule {
 	private Shop shop;
 	@Version
 	private int version;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<ScheduleItem> items = new HashSet<>();
 

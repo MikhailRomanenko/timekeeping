@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ public class ScheduleController {
 	private final EmployeeService employeeService;
 	private final ShopService shopService;
 	private final EmployeeViewAdapter employeeViewAdapter;
-	
+
 	@Autowired
 	public ScheduleController(ScheduleService scheduleService, EmployeeService employeeService,
 			ShopService shopService, EmployeeViewAdapter employeeViewAdapter) {
@@ -62,12 +63,15 @@ public class ScheduleController {
 	
 	@RequestMapping(value = "api/schedule/{shopId:[0-9]+}/{date:\\d{4}-\\d{2}-\\d{2}}", method = RequestMethod.GET)
 	@ResponseBody
-	public ScheduleView getSchedule(@PathVariable Long shopId, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+	public Schedule getSchedule(@PathVariable Long shopId,
+								@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		Schedule schedule = scheduleService.findSchedule(shopId, date);
-		if(schedule == null) {
-			return ScheduleView.emptyFor(shopId, date);
-		} else {
-			return ScheduleView.of(schedule);
+		if(schedule != null)
+			return schedule;
+		else {
+			Shop shop = shopService.find(shopId);
+			Schedule empty = new Schedule(shop, date);
+			return empty;
 		}
 	}
 	

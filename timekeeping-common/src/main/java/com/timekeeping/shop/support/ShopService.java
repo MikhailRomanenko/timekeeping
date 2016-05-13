@@ -39,4 +39,13 @@ public class ShopService {
 		return result;
 	}
 
+	/**
+	 * Finds a shop by its id value.
+	 * @param id value of the shop
+	 * @return shop
+     */
+	public Shop find(Long id) {
+		return shopRepository.findOne(id);
+	}
+
 }

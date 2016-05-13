@@ -2,15 +2,9 @@ package com.timekeeping.employee;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.timekeeping.shop.Shop;
 import com.timekeeping.support.JView;
@@ -34,6 +28,7 @@ public class Employee {
 	@Column(name = "LAST_NAME")
 	@JsonView(JView.TimeTable.class)
 	private String lastName;
+	@JsonBackReference
 	@ManyToOne
 	private Shop shop;
 	@ManyToOne

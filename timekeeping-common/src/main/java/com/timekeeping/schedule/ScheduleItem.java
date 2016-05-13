@@ -11,6 +11,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.timekeeping.employee.Employee;
 
 /**
@@ -27,6 +28,7 @@ import com.timekeeping.employee.Employee;
 @Entity
 @IdClass(ScheduleItemId.class)
 public class ScheduleItem {
+	@JsonBackReference
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "SCHEDULE_ID")
