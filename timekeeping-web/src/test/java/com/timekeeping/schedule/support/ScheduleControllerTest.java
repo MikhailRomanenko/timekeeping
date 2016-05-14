@@ -43,7 +43,6 @@ public class ScheduleControllerTest {
                 .build();
     }
 
-    @Ignore
     @Test
     @WithUserDetails("user1")
     public void getExistingScheduleShouldReturnRightJsonView() throws Exception {

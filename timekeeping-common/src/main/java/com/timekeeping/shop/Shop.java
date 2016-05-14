@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.timekeeping.employee.Employee;
 import com.timekeeping.user.User;
@@ -24,7 +25,7 @@ public class Shop {
 	private Long id;
 	private String name;
 	@JsonManagedReference
-	@OneToMany(mappedBy = "shop")
+	@OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
 	private List<Employee> employees = new LinkedList<>();
 	@Embedded
 	private Location location;

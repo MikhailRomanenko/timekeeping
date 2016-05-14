@@ -70,8 +70,7 @@ public class ScheduleController {
 			return schedule;
 		else {
 			Shop shop = shopService.find(shopId);
-			Schedule empty = new Schedule(shop, date);
-			return empty;
+			return new Schedule(shop, date);
 		}
 	}
 	
