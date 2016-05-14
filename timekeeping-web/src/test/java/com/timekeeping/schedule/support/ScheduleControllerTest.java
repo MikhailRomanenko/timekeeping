@@ -49,12 +49,10 @@ public class ScheduleControllerTest {
     public void getExistingScheduleShouldReturnRightJsonView() throws Exception {
         mvc.perform(get("/api/schedule/1/2016-03-01"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(2))
                 .andExpect(jsonPath("$.shop.id").value(1))
-                .andExpect(jsonPath("$.items", IsCollectionWithSize.hasSize(2)))
-                .andExpect(jsonPath("$.items[0].department").value("Sales"))
-                .andExpect(jsonPath("$.items[0].employees").value(1))
-                .andExpect(jsonPath("$.items[0].employees[0].employee.id").value(3))
-                .andExpect(jsonPath("$.items[0].employees[0].startTime").value(720));
+                .andExpect(jsonPath("$.shop.employees").doesNotExist())
+                .andExpect(jsonPath("$.items", IsCollectionWithSize.hasSize(3)));
     }
 
     @Test
@@ -62,8 +60,9 @@ public class ScheduleControllerTest {
     public void getNotExistingScheduleShouldReturnRightJsonView() throws Exception {
         mvc.perform(get("/api/schedule/1/2016-03-10"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist())
                 .andExpect(jsonPath("$.shop.id").value(1))
-                .andExpect(jsonPath("$.items").isEmpty())
-                .andExpect(jsonPath("$.version").value(0));
+                .andExpect(jsonPath("$.shop.employees").doesNotExist())
+                .andExpect(jsonPath("$.items").isEmpty());
     }
 }
