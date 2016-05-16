@@ -187,7 +187,7 @@ angular.module('time-table')
                     if($scope.schedule[iDept].employees.length === 0) {
                         $scope.schedule.splice(iDept, 1);
                     }
-                   $scope.onRemove({id: line.employeeId});
+                   $scope.onRemove({line: line});
                 };
             }],
             link: function(scope, element){
@@ -249,7 +249,7 @@ angular.module('time-table')
                 minMax: '&',
                 step: '&',
                 workTypes: '&',
-                onRemove: '&remove'
+                onRemove: '&'
             },
             controller: ['$scope', function($scope) {
                 $scope.visible = function() {
