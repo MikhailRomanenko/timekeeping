@@ -178,6 +178,12 @@ angular.module('schedule')
             if($scope.schedule) $scope.scheduleLines = [];
         };
 
+        $scope.cancel = function() {
+            $scope.scheduleLines = ItemsAdapter.adapt($scope.schedule.items, function(item) {
+                return item.employee.position.department;
+            });
+        };
+
         $scope.saveSchedule = function() {
             RequestAnimationService.show();
             $scope.schedule.items = ItemsAdapter.flat($scope.scheduleLines);
