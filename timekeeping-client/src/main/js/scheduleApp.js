@@ -97,6 +97,37 @@ angular.module('schedule')
             }
         };
     }])
+    .factory('TimeTableItemsAdapter', function(){
+        function findIndexByDepartment(items, dept) {
+            return items.findIndex(function(elem){
+                if(elem.departmentName === dept) return true;
+                return false;
+            });
+        }
+        return {
+            adapt: function(items) {
+                var grouped = items.reduce(function(prev, curr){
+                    var dept = curr.employee.position.department;
+                    var dIndex = findIndexByDepartment(prev, dept);
+                    if(dIndex < 0) {
+                        dIndex = prev.push({ departmentName: dept, employees: [] }) - 1;
+                    }
+                    prev[dIndex].employees.push(curr);
+                    return prev;
+                }, []);
+                return grouped;
+            },
+            adaptBack: function(grouped) {
+                var items = grouped.reduce(function(prev, curr){
+                    curr.employees.forEach(function(emp){
+                        prev.push(emp)
+                    });
+                    return prev;
+                }, []);
+                return items;
+            }
+        }
+    })
     .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', 'RequestAnimationService', 'Notification',
         function($scope, $q, ScheduleService, RequestAnimationService, Notification){
         $scope.isVisible = false;
