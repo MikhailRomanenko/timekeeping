@@ -97,34 +97,26 @@ angular.module('schedule')
             }
         };
     }])
-    .factory('TimeTableItemsAdapter', function(){
-        function findIndexByDepartment(items, dept) {
-            return items.findIndex(function(elem){
-                if(elem.departmentName === dept) return true;
-                return false;
-            });
-        }
+    .factory('ItemsAdapter', function () {
         return {
-            adapt: function(items) {
-                var grouped = items.reduce(function(prev, curr){
-                    var dept = curr.employee.position.department;
-                    var dIndex = findIndexByDepartment(prev, dept);
-                    if(dIndex < 0) {
-                        dIndex = prev.push({ departmentName: dept, employees: [] }) - 1;
+            adapt: function (items, groupBy) {
+                return items.reduce(function (prev, curr) {
+                    var dept = groupBy(curr);
+                    var dIndex = prev.findIndex(function (elem) {
+                        if (elem.departmentName === dept) return true;
+                        return false;
+                    });
+                    if (dIndex < 0) {
+                        dIndex = prev.push({departmentName: dept, employees: []}) - 1;
                     }
                     prev[dIndex].employees.push(curr);
                     return prev;
                 }, []);
-                return grouped;
             },
-            adaptBack: function(grouped) {
-                var items = grouped.reduce(function(prev, curr){
-                    curr.employees.forEach(function(emp){
-                        prev.push(emp)
-                    });
-                    return prev;
+            flat: function (grouped) {
+                return grouped.reduce(function (prev, curr) {
+                    return prev.concat(curr.employees);
                 }, []);
-                return items;
             }
         }
     })
