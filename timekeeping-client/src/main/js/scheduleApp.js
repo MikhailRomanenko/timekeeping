@@ -47,20 +47,13 @@ angular.module('schedule')
                     throw error;
                 });
             },
-            getAvailableEmployeesKeys: function(employees, items) {
-                var activeEmployeesKeys = Object.keys(employees).filter(function(empKey){
-                    return employees[empKey].active;
+            getAvailableEmployees: function(employees, items) {
+                return employees.filter(function(emp) {
+                    if(emp.active && items.find(function (item) {
+                            return item.employee.id === emp.id;
+                        })) return true;
+                    return false;
                 });
-                var grouped = {};
-                activeEmployeesKeys.forEach(function(empKey){
-                    var dep = employees[empKey].position.department;
-                    if(!(items[dep] && items[dep][empKey])) {
-                        if(!grouped[dep])
-                            grouped[dep] = [];
-                        grouped[dep].push(empKey);
-                    }
-                });
-                return grouped;
             }
         };
     }])
@@ -123,9 +116,9 @@ angular.module('schedule')
     .controller('ScheduleController', ['$scope', '$q', 'ScheduleService', 'RequestAnimationService', 'Notification',
         function($scope, $q, ScheduleService, RequestAnimationService, Notification){
         $scope.isVisible = false;
-        $scope.allEmployees = {};
+        $scope.employees = {};
         $scope.schedule = {};
-        $scope.employeesToAdd = {};
+        $scope.availableEmployees = {};
         $scope.date = Date.now();
         $scope.dateOptions = {
             minMode: 'day',
@@ -143,10 +136,15 @@ angular.module('schedule')
             RequestAnimationService.show();
             $q.all([ScheduleService.getEmployees($scope.shopId), ScheduleService.getSchedule($scope.shopId, $scope.date)])
                 .then(function(data){
-                    $scope.allEmployees = data[0];
+                    $scope.employees = data[0];
                     $scope.schedule = data[1];
-                    $scope.employeesToAdd =
-                        ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, $scope.schedule.items);
+                    $scope.availableEmployees = ItemsAdapter.adapt(
+                        ScheduleService.getAvailableEmployees($scope.employees, $scope.schedule.items), function(emp) {
+                            return emp.position.department;
+                        });
+                    $scope.scheduleLines = ItemsAdapter.adapt($scope.schedule.items, function(item) {
+                        return item.employee.position.department;
+                    });
                     $scope.isVisible = true;
                 }, function(error){
                     Notification.error('<p>Error occurred while loading data.</p>' +
@@ -161,8 +159,13 @@ angular.module('schedule')
             ScheduleService.getSchedule(shopId, date)
                 .then(function(schedule){
                     $scope.schedule = schedule;
-                    $scope.employeesToAdd =
-                        ScheduleService.getAvailableEmployeesKeys($scope.allEmployees, schedule.items);
+                    $scope.availableEmployees = ItemsAdapter.adapt(
+                        ScheduleService.getAvailableEmployees($scope.employees, $scope.schedule.items), function(emp) {
+                            return emp.position.department;
+                        });
+                    $scope.scheduleLines = ItemsAdapter.adapt($scope.schedule.items, function(item) {
+                        return item.employee.position.department;
+                    });
                 }, function(error){
                     Notification.error('<p>Error occurred while loading schedule data.</p>' +
                         '<p>Reason: '+ error.statusText +'.</p>');
@@ -172,11 +175,12 @@ angular.module('schedule')
         };
 
         $scope.clearItems = function() {
-            if($scope.schedule) $scope.schedule.items = {};
+            if($scope.schedule) $scope.scheduleLines = [];
         };
 
         $scope.saveSchedule = function() {
             RequestAnimationService.show();
+            $scope.schedule.items = ItemsAdapter.flat($scope.scheduleLines);
             ScheduleService.saveSchedule($scope.schedule)
                 .then(function(version){
                     $scope.schedule.version = version;
