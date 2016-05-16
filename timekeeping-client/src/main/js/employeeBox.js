@@ -1,6 +1,6 @@
-angular.module('EmployeeBox', []);
+angular.module('employee-box', []);
 
-angular.module('EmployeeBox')
+angular.module('employee-box')
     .directive('employeeBox', function(){
         return {
             restrict: 'E',
@@ -9,6 +9,6 @@ angular.module('EmployeeBox')
                 departments: "=employees",
                 select: "&"
             },
-            templateUrl: '../templates/employee-box.html'
+            templateUrl: '/templates/employee-box.html'
         };
     });
