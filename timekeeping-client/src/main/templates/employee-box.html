@@ -1,6 +1,6 @@
 <div class="dropdown">
     <button id="empMenu" type="button" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false" class="btn btn-primary">Employees
+            aria-expanded="false" class="btn btn-primary" ng-disabled="isDisabled()">Employees
         <span class="caret"></span></button>
     <div class="dropdown-menu employee-box" aria-labelledby="empMenu" ng-click="$event.stopPropagation();">
         <div ng-repeat="dept in departments | orderBy:'departmentName'" class="department">

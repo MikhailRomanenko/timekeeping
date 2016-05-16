@@ -9,7 +9,7 @@ angular.module('employee-box')
                 departments: "=employees",
                 onSelect: "&select"
             },
-            controller: ['$scope', function($scope){
+            controller: ['$scope', '$element', function($scope, $element){
                  $scope.select = function(department, employee) {
                      var iDept = $scope.departments.findIndex(function(elem){
                          if(department === elem.departmentName) return true;
@@ -24,7 +24,13 @@ angular.module('employee-box')
                          $scope.departments.splice(iDept, 1);
                      if(angular.isFunction($scope.onSelect))
                          $scope.onSelect({employee: employee});
-                 }
+                 };
+                
+                $scope.isDisabled = function() {
+                    var disabled = !$scope.departments || ($scope.departments.length === 0);
+                    if(disabled) $element.removeClass('open');
+                    return disabled;
+                };
             }],
             templateUrl: '../templates/employee-box.html'
         };
