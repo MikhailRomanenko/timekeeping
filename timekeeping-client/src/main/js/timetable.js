@@ -1,6 +1,6 @@
-angular.module('TimeTable', []);
+angular.module('time-table', []);
 
-angular.module('TimeTable')
+angular.module('time-table')
     .factory('throttle', function(){
         return function(func, wait, options) {
             var timeout, context, args, result;
@@ -70,8 +70,8 @@ angular.module('TimeTable')
         };
     }]);
 
-angular.module('TimeTable')
-    .provider('timeTableDefaults', function() {
+angular.module('time-table')
+    .provider('TimeTableDefaults', function() {
         var draggableConfig = {
                 axis: 'X',
                 containment: 'parent'
@@ -161,12 +161,12 @@ angular.module('TimeTable')
         }
     });
 
-angular.module('TimeTable')
-    .directive('timeLine', ['throttle', 'timeTableDefaults', function(throttle, timeTableDefaults){
+angular.module('time-table')
+    .directive('timeLine', ['throttle', 'TimeTableDefaults', function(throttle, TimeTableDefaults){
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: timeTableDefaults.lineTemplate,
+            templateUrl: TimeTableDefaults.lineTemplate,
             scope: false,
             require: '^^timeTable',
             controller: ['$scope', function($scope){
@@ -176,23 +176,18 @@ angular.module('TimeTable')
 
                 $scope.remove = function(line) {
                     var iDept = $scope.schedule.findIndex(function(elem){
-                        if(line.position.department === elem.department) {
-                            return true;
-                        }
+                        if(line.employee.position.department === elem.departmentName) return true;
                         return false;
                     });
-                    var iRemove = $scope.schedule[iDept].findIndex(function(elem){
-                        if(elem.employeeId === line.employeeId) {
-                            return true;
-                        }
+                    var iRemove = $scope.schedule[iDept].employees.findIndex(function(elem){
+                        if(elem.employee.id === line.employee.id) return true;
                         return false;
                     });
-                    var removedEmployeeId = line.employeeId;
-                    $scope.schedule[iDept].splice(iRemove, 1);
-                    if($scope.schedule[iDept].length === 0) {
+                    $scope.schedule[iDept].employees.splice(iRemove, 1);
+                    if($scope.schedule[iDept].employees.length === 0) {
                         $scope.schedule.splice(iDept, 1);
                     }
-                   $scope.onRemove({id: removedEmployeeId});
+                   $scope.onRemove({id: line.employeeId});
                 };
             }],
             link: function(scope, element){
@@ -203,7 +198,7 @@ angular.module('TimeTable')
                     element.find('.time-line-data').css('width', scope.dataAreaWidth + 'px');
                     draggable.draggable('option', 'grid', [ scope.unitWidth, 0 ]);
                     draggable.resizable('option', 'grid', [ scope.unitWidth, 0 ]);
-                    draggable.resizable('option', 'minWidth', 60 * timeTableDefaults.minDuration / scope.step * scope.unitWidth);
+                    draggable.resizable('option', 'minWidth', 60 * TimeTableDefaults.minDuration / scope.step * scope.unitWidth);
                     draggableWidth = scope.schLine.duration / scope.step * scope.unitWidth;
                     draggablePosition = (scope.schLine.startTime - scope.minMax.min * 60) / scope.step * scope.unitWidth;
                     draggable.css('width', draggableWidth + 'px');
@@ -211,8 +206,8 @@ angular.module('TimeTable')
                 }
 
                 draggable = element.find('.time-line-area > div')
-                    .resizable(timeTableDefaults.resizableConfig)
-                    .draggable(timeTableDefaults.draggableConfig);
+                    .resizable(TimeTableDefaults.resizableConfig)
+                    .draggable(TimeTableDefaults.draggableConfig);
 
                 draggable.on('drag', throttle(function(event, ui){
                     if(draggablePosition !== ui.position.left) {
@@ -243,12 +238,12 @@ angular.module('TimeTable')
         };
     }]);
 
-angular.module('TimeTable')
-    .directive('timeTable', ['timeTableDefaults', '$window', function (timeTableDefaults, $window) {
+angular.module('time-table')
+    .directive('timeTable', ['TimeTableDefaults', '$window', function (TimeTableDefaults, $window) {
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: timeTableDefaults.tableTemplate,
+            templateUrl: TimeTableDefaults.tableTemplate,
             scope: {
                 schedule: '=',
                 minMax: '&',
@@ -266,7 +261,7 @@ angular.module('TimeTable')
                 };
             }],
             link: function(scope, elem){
-                var steps = timeTableDefaults.steps,
+                var steps = TimeTableDefaults.steps,
                     partsPerHour, prevElementWidth = elem.width();
                 scope.minMax = scope.minMax();
                 scope.step = scope.step();
@@ -280,16 +275,16 @@ angular.module('TimeTable')
                     if(!scope.step || !steps.find(function(element) {
                             if(element === scope.step) return true;
                             return false;
-                        })) scope.step = timeTableDefaults.step;
+                        })) scope.step = TimeTableDefaults.step;
                     partsPerHour = 60 / scope.step;
                 }
 
                 function calculateHours() {
-                    scope.minMax = timeTableDefaults.normalizeMinMax(scope.minMax);
+                    scope.minMax = TimeTableDefaults.normalizeMinMax(scope.minMax);
                 }
 
                 function calculateWidthUnits() {
-                    var areaWidth = elem.width() * timeTableDefaults.timeAreaRatio;
+                    var areaWidth = elem.width() * TimeTableDefaults.timeAreaRatio;
                     var delta = 0, hoursCount = scope.minMax.max - scope.minMax.min;
                     do {
                         delta = Math.round(areaWidth / (hoursCount * partsPerHour));

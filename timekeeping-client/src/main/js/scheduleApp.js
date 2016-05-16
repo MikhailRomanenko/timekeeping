@@ -1,4 +1,4 @@
-angular.module('schedule', ['ui.bootstrap', 'ui-notification', 'TimeTable']);
+angular.module('schedule', ['ui.bootstrap', 'ui-notification', 'time-table']);
 
 angular.module('schedule')
     .config(function(NotificationProvider){

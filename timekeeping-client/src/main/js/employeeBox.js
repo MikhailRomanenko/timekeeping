@@ -25,7 +25,7 @@ angular.module('employee-box')
                      if(angular.isFunction($scope.onSelect))
                          $scope.onSelect({employee: employee});
                  };
-                
+
                 $scope.isDisabled = function() {
                     var disabled = !$scope.departments || ($scope.departments.length === 0);
                     if(disabled) $element.removeClass('open');

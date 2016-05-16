@@ -1,6 +1,6 @@
 <div class="container-fluid time-table" ng-show="visible()">
     <div ng-repeat="dept in schedule">
-        <div class="time-table-header">{{dept.department}}</div>
-        <time-line ng-repeat="schLine in dept"></time-line>
+        <div class="time-table-header">{{dept.departmentName}}</div>
+        <time-line ng-repeat="schLine in dept.employees"></time-line>
     </div>
 </div>
