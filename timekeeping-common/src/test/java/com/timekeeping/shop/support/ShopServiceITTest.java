@@ -1,18 +1,17 @@
 package com.timekeeping.shop.support;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
+import com.timekeeping.AbstractRepositoryIntegrationTest;
+import com.timekeeping.shop.Shop;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.timekeeping.AbstractRepositoryIntegerationTest;
-import com.timekeeping.shop.Shop;
+import java.util.List;
 
-public class ShopServiceITTest extends AbstractRepositoryIntegerationTest {
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
+public class ShopServiceITTest extends AbstractRepositoryIntegrationTest {
 
 	private static final String USER1 = "user1";
 	private static final String USER2 = "user2";

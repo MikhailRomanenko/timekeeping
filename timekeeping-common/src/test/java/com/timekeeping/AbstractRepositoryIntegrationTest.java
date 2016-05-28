@@ -7,7 +7,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
-@TestPropertySource(locations = "classpath:\\test.properties")
-public abstract class AbstractRepositoryIntegerationTest {
-
+@TestPropertySource(properties = {
+        "spring.jpa.hibernate.ddl-auto=validate",
+        "spring.jpa.show-sql=true"})
+public abstract class AbstractRepositoryIntegrationTest {
 }

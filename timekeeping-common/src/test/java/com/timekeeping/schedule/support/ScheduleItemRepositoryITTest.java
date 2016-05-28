@@ -1,21 +1,18 @@
 package com.timekeeping.schedule.support;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import com.timekeeping.AbstractRepositoryIntegrationTest;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.timekeeping.AbstractRepositoryIntegerationTest;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 
-public class ScheduleItemRepositoryITTest extends AbstractRepositoryIntegerationTest {
+public class ScheduleItemRepositoryITTest extends AbstractRepositoryIntegrationTest {
 
 	@Autowired
 	private ScheduleItemRepository scheduleItemRepository;

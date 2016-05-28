@@ -1,25 +1,20 @@
 package com.timekeeping.schedule.support;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-
+import com.timekeeping.AbstractRepositoryIntegrationTest;
+import com.timekeeping.schedule.Schedule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.timekeeping.AbstractRepositoryIntegerationTest;
-import com.timekeeping.schedule.Schedule;
+import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class ScheduleRepositoryITTest extends AbstractRepositoryIntegerationTest {
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
+public class ScheduleRepositoryITTest extends AbstractRepositoryIntegrationTest {
 	private static final LocalDate DATE = LocalDate.of(2016, 3, 1);
 	private static final long SHOP_ID = 1L;
 	private static final long SCHEDULE_ID = 1L;

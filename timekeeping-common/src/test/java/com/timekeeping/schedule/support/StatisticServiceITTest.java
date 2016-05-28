@@ -1,20 +1,19 @@
 package com.timekeeping.schedule.support;
 
+import com.timekeeping.AbstractRepositoryIntegrationTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.util.function.UnaryOperator;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import java.time.LocalDate;
-import java.util.function.UnaryOperator;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.timekeeping.AbstractRepositoryIntegerationTest;
-
-public class StatisticServiceITTest extends AbstractRepositoryIntegerationTest {
+public class StatisticServiceITTest extends AbstractRepositoryIntegrationTest {
 
 	private StatisticService service;
 	@Autowired

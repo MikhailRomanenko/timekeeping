@@ -1,18 +1,17 @@
 package com.timekeeping.employee.support;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
+import com.timekeeping.AbstractRepositoryIntegrationTest;
+import com.timekeeping.employee.Employee;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.timekeeping.AbstractRepositoryIntegerationTest;
-import com.timekeeping.employee.Employee;
+import java.util.List;
 
-public class EmployeeServiceITTest extends AbstractRepositoryIntegerationTest {
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
+public class EmployeeServiceITTest extends AbstractRepositoryIntegrationTest {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
