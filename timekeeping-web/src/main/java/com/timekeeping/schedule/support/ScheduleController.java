@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -76,8 +75,8 @@ public class ScheduleController {
 	
 	@RequestMapping(value = "api/schedule", method = RequestMethod.POST)
 	@ResponseBody
-	public void saveSchedule(@RequestBody ScheduleView scheduleView) {
-		scheduleService.saveSchedule(scheduleView);
+	public void saveSchedule(@RequestBody Schedule schedule) {
+		scheduleService.saveSchedule(schedule);
 	}
 	
 }

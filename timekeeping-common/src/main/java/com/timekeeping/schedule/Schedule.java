@@ -1,25 +1,15 @@
 package com.timekeeping.schedule;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.timekeeping.shop.Shop;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Version;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.timekeeping.shop.Shop;
+import java.util.function.Predicate;
 
 /**
  * JPA entity representing an individual scheduled work day.
@@ -41,11 +31,10 @@ public class Schedule {
 	@Version
 	private int version;
 	@JsonManagedReference
-	@OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "schedule", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ScheduleItem> items = new HashSet<>();
 
 	protected Schedule(){
-		
 	}
 
 	public Schedule(Shop shop, LocalDate date) {
@@ -89,18 +78,33 @@ public class Schedule {
 		return this.items;
 	}
 
-	public void setItems(Collection<? extends ScheduleItem> items) {
-		this.items = new HashSet<>(items);
+	public void setItems(Set<ScheduleItem> items) {
+		this.items.clear();
+		this.items.addAll(items);
 	}
 	
 	public void addItem(ScheduleItem item) {
+		item.setSchedule(this);
 		this.items.add(item);
 	}
 	
 	public void removeItem(ScheduleItem item) {
 		this.items.remove(item);
+		item.setSchedule(null);
 	}
-	
+
+	public boolean removeItemIf(Predicate<? super ScheduleItem> filter) {
+		return this.items.removeIf(filter);
+	}
+
+	public boolean containsItem(ScheduleItem item) {
+		return this.items.contains(item);
+	}
+
+	public void nullId() {
+		this.id = null;
+	}
+
 	public void updateItems(Collection<? extends ScheduleItem> items) {
 		this.items.clear();
 		this.items.addAll(items);

@@ -1,5 +1,7 @@
 package com.timekeeping.schedule.support;
 
+import com.timekeeping.schedule.Schedule;
+
 import java.time.LocalDate;
 
 /**
@@ -18,4 +20,6 @@ public interface ScheduleRepositoryCustom {
 	 * @return {@code true} if exist otherwise {@code false}
 	 */
 	boolean exists(Long shopId, LocalDate date);
+
+	Schedule saveOrUpdate(Schedule schedule);
 }

@@ -8,13 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.timekeeping.schedule.support.ScheduleAdapter;
-
 @Configuration
 @EnableJpaRepositories(basePackageClasses = RepositoryTestConfig.class)
 @EntityScan(basePackageClasses = RepositoryTestConfig.class)
 @Import({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
-@ComponentScan(basePackageClasses = ScheduleAdapter.class)
+@ComponentScan(basePackageClasses = RepositoryTestConfig.class)
 public class RepositoryTestConfig {
 
 }

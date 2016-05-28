@@ -16,7 +16,7 @@ insert into employee values(5, true, 'PART_TIME', 'Name5', 'Surname5', 3, 2);
 insert into employee values(6, true, 'PART_TIME', 'Name6', 'Surname6', 3, 2);
 
 insert into schedule values(1, DATE '2016-02-29', 0, 1);
-insert into schedule values(2, DATE '2016-03-01', 0, 1);
+insert into schedule values(2, DATE '2016-03-01', 1, 1);
 insert into schedule values(3, DATE '2016-03-02', 0, 1);
 
 insert into schedule_item values(1, 1, 240, 600, 'WORK');

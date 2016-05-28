@@ -1,8 +1,9 @@
 package com.timekeeping.schedule.support;
 
-import java.time.LocalDate;
-import java.time.Month;
-
+import com.timekeeping.TimekeepingWebApplication;
+import com.timekeeping.schedule.Schedule;
+import com.timekeeping.shop.Shop;
+import com.timekeeping.shop.support.ShopService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.timekeeping.TimekeepingWebApplication;
+import java.time.LocalDate;
+import java.time.Month;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(TimekeepingWebApplication.class)
@@ -23,6 +25,8 @@ public class ScheduleServiceSecurityTest {
 
 	@Autowired
 	private ScheduleService scheduleService;
+	@Autowired
+	private ShopService shopService;
 	
 	@Test
 	@WithUserDetails("user1")
@@ -46,15 +50,17 @@ public class ScheduleServiceSecurityTest {
 	@WithUserDetails("user1")
 	@Transactional
 	public void saveOwnSchedule() {
-		ScheduleView view = ScheduleView.emptyFor(1L, LocalDate.of(2016, Month.MARCH, 10));
-		scheduleService.saveSchedule(view);
+		Shop shop = shopService.find(1L);
+		Schedule schedule = new Schedule(shop, LocalDate.of(2016, Month.MARCH, 10));
+		scheduleService.saveSchedule(schedule);
 	}
 	
 	@Test(expected=AccessDeniedException.class)
 	@WithUserDetails("user2")
 	public void saveForeignSchedule() {
-		ScheduleView view = ScheduleView.emptyFor(1L, LocalDate.of(2016, Month.MARCH, 10));
-		scheduleService.saveSchedule(view);
+		Shop shop = shopService.find(1L);
+		Schedule schedule = new Schedule(shop, LocalDate.of(2016, Month.MARCH, 10));
+		scheduleService.saveSchedule(schedule);
 	}
 	
 	@Test(expected=AccessDeniedException.class)

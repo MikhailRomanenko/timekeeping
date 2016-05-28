@@ -1,18 +1,10 @@
 package com.timekeeping.schedule;
 
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.timekeeping.employee.Employee;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * JPA entity representing a particular employee's work time in {@link Schedule}'s items.
